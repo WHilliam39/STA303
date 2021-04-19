@@ -22,7 +22,7 @@ library(tidyverse)
 knitr::opts_chunk$set(include=FALSE)
 ```
 
-# General comments (you can delete this section)
+# General comments (you can delete this section) Test Test 
 
 _You can delete this section, and if you want to check what it said, just open a template from the package again. You don't have to use this particular template, but you DO need to write you report in RMarkdown and include a cover page._
 
