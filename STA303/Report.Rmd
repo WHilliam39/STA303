@@ -54,6 +54,19 @@ _Guidelines for the executive summary:_
 *	_A small number of key visualizations and/or tables are included_
 *	_All three research questions are addressed_
 
+(add more)This study assesses ethnicity/race fairness in hiring, promotion, and salary processes based on the existing employees and hiring data from Black Saber Software.   
+
+We estimate that, 
+
+The results of the study are summarized below.  
+
+* _1_
+* _1_
+* _1_
+*	_1_
+*	_1_
+  
+The key results of the study are summarized in the following tables.  
 
 \newpage
 # Technical report
