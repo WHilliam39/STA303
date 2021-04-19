@@ -74,7 +74,103 @@ _Use bullet points to to describe the research questions you are going to addres
 ## Informative title for section addressing a research question (question 1 Hiring)
 
 _For each research question, you will want to briefly describe any data manipulation, show some exploratory plots/summary tables, report on any methods you use (i.e. models you fit) and the conclusions you draw from these_
+```{r include=FALSE}
+#extract hiring data
+final_hiring<-read_csv("data/final-hires-newgrad_2020.csv")
+phase1<-read_csv("data/phase1-new-grad-applicants-2020.csv")
+phase2<-read_csv("data/phase2-new-grad-applicants-2020.csv")
+phase3<-read_csv("data/phase3-new-grad-applicants-2020.csv")
+```
 
+```{r include=FALSE}
+#get final hiring all detailed info
+combine_phase2_phase3<-inner_join(phase2,phase3,by="applicant_id")
+final_hiring<-inner_join(combine_phase2_phase3,final_hiring,by="applicant_id")
+#get full table of all applicants
+combine_phase1_phase2<-left_join(phase1,phase2,keep=FALSE)
+all_phase<-left_join(combine_phase1_phase2,phase3,keep=FALSE)
+```
+
+```{r include=FALSE}
+#get hiring status
+all_phase$status<-ifelse(all_phase$applicant_id %in% final_hiring$applicant_id,"Hired",
+                  ifelse(all_phase$applicant_id %in% phase1$applicant_id,"Rejected"))
+all_phase<-as.data.frame(unclass(all_phase))
+all_phase$applicant_id<-as.character(all_phase$applicant_id)
+```
+
+```{r}
+#gender distribution on status
+all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+ylab("Percantage")+theme_minimal()
+ggsave("images/hiring_status.png",width = 7, height = 4)
+```
+![](images/hiring_status.png)
+```{r}
+#gender distribution on interview
+all_phase%>%ggplot(aes(x=interviewer_rating_1,y=interviewer_rating_2, color=gender))+geom_point()+theme_minimal()+ylab("Interview 2 rating")+xlab("Interview 1 rating")
+ggsave("images/hiring_interview.png",width = 7, height = 4)
+```
+![](images/hiring_interview.png)
+```{r}
+#gender distribution on gdp
+all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+ylab("GPA")+coord_flip()+xlab("Hiring Status")+geom_hline(yintercept=3, linetype="dashed",color = "orange")+theme_linedraw()
+ggsave("images/hiring_gdp.png",width = 7, height = 4)
+```
+![](images/hiring_gdp.png)
+```{r}
+#gender distribution on technical skill score
+all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10)+ylab("Score")+theme_minimal()+xlab("Technical Skills")
+ggsave("images/hiring_techskill.png",width = 7, height = 4)
+```
+![](images/hiring_techskill.png)
+```{r}
+#gender distribution on writing skill score
+all_phase%>%ggplot(aes(x=writing_skills,fill=gender))+geom_histogram(binwidth=3)+theme_minimal()+xlab("Writing Skills Score")
+ggsave("images/hiring_writingskill.png",width = 7, height = 4)
+```
+![](images/hiring_writingskill.png)
+```{r}
+#gender distribution on speaking skill
+all_phase%>%ggplot(aes(x=speaking_skills,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()
+ggsave("images/hiring_speakingskill.png",width = 7, height = 4)
+```
+![](images/hiring_speakingskill.png)
+```{r}
+#gender distribution on leadership pressence
+all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()
+ggsave("images/hiring_leadership.png",width = 7, height = 4)
+```
+![](images/hiring_leadership.png)
+
+```{r include=FALSE}
+#create binary variable for each of the phase
+phase1$result<-ifelse(phase1$applicant_id%in%phase2$applicant_id,'Proceed','NO')
+phase2$result<-ifelse(phase2$applicant_id%in%phase3$applicant_id,'Proceed','NO')
+combine_phase2_phase3$result<-ifelse(combine_phase2_phase3$applicant_id%in%final_hiring$applicant_id,'Proceed','NO')
+all_phase$result<-ifelse(all_phase$applicant_id%in%final_hiring$applicant_id,'Hired','NO')
+```
+
+```{r include=FALSE}
+#fit mixed logistic regression model
+phase1<-as.data.frame(unclass(phase1))
+model1<-glmer(as.factor(result)~gpa+gender+extracurriculars+work_experience+
+                (1|applicant_id),data = phase1,family = binomial,nAGQ = 10)
+summary(model1)
+```
+
+```{r include=FALSE}
+#fit mixed logistic regression model
+phase2<-as.data.frame(unclass(phase2))
+model2<-glmer(as.factor(result)~gpa+gender+technical_skills+writing_skills+leadership_presence+speaking_skills+(1|applicant_id),data = phase2,family = binomial)
+summary(model2)
+```
+
+```{r include=FALSE}
+#fit mixed logistic regression model
+combine_phase2_phase3<-as.data.frame(unclass(combine_phase2_phase3))
+model3<-glmer(as.factor(result)~gpa+gender+log(interviewer_rating_1)+log(interviewer_rating_2)+(1|applicant_id),data = combine_phase2_phase3,family = binomial)
+summary(model3)
+```
 ## Informative title for section addressing a research question (question 2 Salary)
 
 ## Informative title for section addressing a research question (question 3 Promotion)
