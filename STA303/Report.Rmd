@@ -114,7 +114,12 @@ all_phase$applicant_id<-as.character(all_phase$applicant_id)
 
 ```{r}
 #gender distribution on status
-all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+ylab("Percantage")+theme_minimal()
+all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+theme_minimal()+
+  labs(title="Gender distribution in hiring status, Black Saber Software",
+      x="Status",
+      y="Percentage",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n","Data as of ",format(Sys.Date(),"%B %d, %Y")))+
+  scale_fill_brewer(palette = "Pastel2")
 ggsave("images/hiring_status.png",width = 7, height = 4)
 ```
 ![](images/hiring_status.png)
