@@ -100,7 +100,7 @@ _In this section you will summarize your findings across all the research questi
 
 \newpage
 # Consultant information
-## Consultant profiles abc
+## Consultant profiles abc efg
 
 *Complete this section with a brief bio for each member of your group. If you are completing the project individually, you only need to complete one for yourself. In that case, change the title of this section to 'Consultant profile' instead. Examples below. This section is only marked for completeness, clarity and professionalism, not 'truth' so you can write it as if we're a few years in the future. Put your current degree in as completed and/or add your first choice grad school program, whatever you like. What skills related skills would you most like to highlight? What job title do you want?*
 
