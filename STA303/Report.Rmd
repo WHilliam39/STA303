@@ -318,6 +318,14 @@ new_data <- new_data[,-c(5:7)]
 str(new_data)
 ```
 
+```{r,echo=FALSE, results='hide', fig.show='hide'}
+#fixed effects & random effects:
+salary_role_seniority<- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
+            random = ~1|role_seniority, method = "ML") #group by role seniority
+summary(salary_role_seniority)
+```
+Under this linear mixed effects model, it grouped by the position of senior of each employees that is the random effect of this model. The salary would increased by 3330.832 dollars on average when the level of senior increase. It shows the correlation between each variable, and the summary table illustrates the estimate and p_value of each variable. From the result on above, the female group has a negative correlation with the each level of role seniority, it represents the 
+females are less likely to promote to a relative higher position than males.
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #Fit model:
@@ -328,7 +336,7 @@ model_num_promote <- lme(num_promoted ~
                          data=new_data,random = ~1|employee_id, method = "ML")
 summary(model_num_promote)
 ```
-Under the **Linear Mixed Effects Models**, we have build a model to describe the relationship between the number of promotion and average productivity, gender and team groups, and group by employees' ID. From the model, it illustrates that the number of promotion would decreased by 0.2867 point in average when the employee is female rather than male. In addition, the p-value in female group is 0.0000, which is much less than 0.05, it represents the female group has a significant effect in this model, and it provide a strong evidence to reject the null hypothesis (everyone has the equal oppotunity on promotions)
+Under the **Linear Mixed Effects Models**, we have build a model to describe the relationship between the number of promotion and average productivity, gender and team groups, and group by employees' ID. From the model, it illustrates that the number of promotion would decreased by 0.2867 point in average when the employee is female rather than male. In addition, the p-value in female group is 0.0000, which is much less than 0.05, it represents the female group has a significant effect in this model, and it provide a strong evidence to reject the null hypothesis (everyone has the equal opportunity on promotions)
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 model_promote_productivity<- lme(num_promoted~
@@ -336,12 +344,12 @@ model_promote_productivity<- lme(num_promoted~
                            data=new_data,random = ~1|employee_id, method = "ML")
 summary(model_promote_productivity)
 ```
-Under this liner mixed effect model, it adds a new variable to show the effect on whether the employees's leadership ability is exceed thant the requirments of the level to the oppotunity to promoted. From this model, the women group also has a less number of promotion than the men, but the p-value of this effect is much greater than 0.05, which is 0.8202. Then this effect is not significant to determine this model.
+Under this liner mixed effect model, it adds a new variable to show the effect on whether the employee's leadership ability is exceed than the requirements of the level to the opportunity to promoted. From this model, the women group also has a less number of promotion than the men, but the p-value of productivity in this model is greater than 0.05, which is 0.0768. Then it represents the changing of productivity does not provide a significance difference on number of employee's promotion.
 
 ```{r}
 lrtest(model_num_promote,model_promote_productivity)
 ```
-By using the likelihood ratio test, we can find that the likelihood ratio Chi-Squared statistic and the p-value is greater than 0.05, which is 0.07373, it represents the average productivity is not an impantant effect when the employees have the chance to promote. On the other hand, from the boxpolt result between gender and productivity, it shows that the mean of productivity in female group is higher than the male group. After combine the two results, the female group perhaps has few number of promotion and less oppotunity to promot than the male.
+By using the likelihood ratio test, we can find that the likelihood ratio Chi-Squared statistic and the p-value is greater than 0.05, which is 0.07373, it represents the average productivity is not an important effect when the employees have the chance to promote. On the other hand, from the boxplot result between gender and productivity, it shows that the mean of productivity in female group is higher than the male group. After combine the two results, the female group perhaps has few number of promotion and less opportunity to promote than the male.
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #EDA:
@@ -393,16 +401,7 @@ ggsave("images/gender_leadership.png",width = 7, height = 4)
 ```
 ![Gender Ratio in Leadership Level. The gender in "leadership exceed expectation" category is only men, and the female has occupied above 90% in "leadership needs to improve" category](images/gender_leadership.png)
 
-
-```{r,echo=FALSE, results='hide', fig.show='hide'}
-#fixed effects & random effects:
-salary_role_seniority<- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
-            random = ~1|role_seniority, method = "ML") #group by role seniority
-summary(salary_role_seniority)
-```
-Under this linear mixed effects model, it grouped by the position of senior of each employees that is the random effect of this model. The salary would increased by 3330.832 dollars on average when the level of senior increase. It shows the correlation between each variable, and the summary table illustrates the estimate and p_value of each variable. From the result on above, the female group has a negative correlation with the each level of role seniority, it represents the 
-females are less likely to promote to a relative higher position than males.
-
+In conclusion, after analysis the linear mixed effect model with number of promotion, gender, team and leadership performance, the result shows that number of promotion would decreased by 0.2867 point in average when the employee is female rather than male, and this effect is significant in this model. From the four graphs above, the main idea is the males occupied a relative large percentage in all nine senior position, and female group has a relative smaller number to be promoted within a same level of productivity. Therefore, the gender perhaps affect the promotion process and result in Black Saber Software.
 
 ## Discussion
 
