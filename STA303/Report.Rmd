@@ -381,13 +381,13 @@ By using the likelihood ratio test, we can find that the likelihood ratio Chi-Sq
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #EDA:
-# scatterplot on the poductivity by number of promoted grouped by gender:
+# scatterplot on the productivity by number of promoted grouped by gender:
 ggplot(data = new_data, aes(x = avg_productivity,y=num_promoted, colour = gender)) +
-  geom_point()+
+  geom_quasirandom(size=1,groupOnX = FALSE)+
   theme_minimal()+
-  labs(title = "Gender distribution between productivity and number of promoted",
-       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_fill_brewer(palette = "Pastel2")
+  labs(title = "Gender distribution in productivity and number of promoted",
+       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),x="Average productivity",y="Numbers of promotion")+
+  scale_color_brewer(palette = "Pastel2")
 ggsave("images/promotion_productivity.png",width = 7, height = 4)
 ```
 ![Gender Distribution on productivity by number of promotion. The females group concentrates on one or two times of promotion, though she has relative larger productivity than the males. The males group has more times to promoted than females. ](images/promotion_productivity.png)
@@ -395,24 +395,24 @@ ggsave("images/promotion_productivity.png",width = 7, height = 4)
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #EDA:
-#role senority on gender:
+#role seniority on gender:
 ggplot(current_employee, aes(role_seniority, ..count..)) + geom_bar(aes(fill = gender), position = "fill")+
   theme_minimal()+
   labs(title = "Gender distribution in role senority",
-       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),y="Percentage",x="Role Seniority")+
   scale_fill_brewer(palette = "Pastel2")
 ggsave("images/gender_role_senority.png",width = 7, height = 4)
 ```
 ![Gender Ratio in Role Senority. The men has occupied a larger percentage when the position increases.](images/gender_role_senority.png)
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
-#scatterplot on the 
+#scatterplot on the leadership exceed expectation and number of promoted
 ggplot(data = new_data, aes(x = leadership_exceeds,y=num_promoted,colour = gender))+
-  geom_point()+
+  geom_point(size=3)+
   theme_minimal()+
-  labs(title = "Gender distribution between leadership exceed expectation and number of promoted",
-       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_fill_brewer(palette = "Pastel2")
+  labs(title = "Gender distribution in leadership exceed expectation and number of promoted",
+       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),y="Leadership exceeds", x="Numbers of promotion")+
+  scale_color_brewer(palette = "Pastel2")
 ggsave("images/promotion_exceeds_leadship.png",width = 7, height = 4)
 ```
 ![Gender Distribution on exceeded leadership by the number of promotion. The majority of employees' leadership exceed their expectation are males.](images/promotion_exceeds_leadship.png)
@@ -423,7 +423,7 @@ ggplot(current_employee, aes(leadership_for_level, ..count..)) +
   geom_bar(aes(fill = gender), position = "fill")+
   theme_minimal()+
   labs(title = "Gender distribution in leadership level",
-       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),x="Leadership levels",y="Percentage")+
   scale_fill_brewer(palette = "Pastel2")
 ggsave("images/gender_leadership.png",width = 7, height = 4)
 ```
