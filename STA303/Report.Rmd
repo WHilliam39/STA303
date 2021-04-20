@@ -189,7 +189,71 @@ combine_phase2_phase3<-as.data.frame(unclass(combine_phase2_phase3))
 model3<-glmer(as.factor(result)~gpa+gender+log(interviewer_rating_1)+log(interviewer_rating_2)+(1|applicant_id),data = combine_phase2_phase3,family = binomial)
 summary(model3)
 ```
-## Informative title for section addressing a research question (question 2 Salary)
+
+## 2. Is there a gender wage gap in Black Saber?
+
+```{r, echo=FALSE, results='hide', fig.show='hide'}
+# libraries for research questions 2 and 3
+library(tidyverse)
+library(ggplot2)
+#install.packages("DataExplorer")
+library(DataExplorer)
+library(lme4)
+library(nlme)
+
+# data wrangling for research questions 2 and 3
+
+# read in the data
+black_saber_current_employees <- read_csv("data/black-saber-current-employees.csv")
+
+# exploratory data analysis on current employees:
+current_employee <- black_saber_current_employees
+summary(current_employee)
+
+# change variable data types:
+current_employee$employee_id <- as.character(current_employee$employee_id)
+current_employee$gender <- as.factor(current_employee$gender)
+current_employee$team <- as.factor(current_employee$team)
+current_employee$role_seniority <- as.factor(current_employee$role_seniority)
+current_employee$leadership_for_level <- as.factor(current_employee$leadership_for_level)
+
+current_employee$salary <- gsub("\\$", "", current_employee$salary)
+current_employee$salary <- gsub("\\,", "", current_employee$salary)
+current_employee$salary <- as.numeric(current_employee$salary)
+
+# basic plot about current_employee data:
+plot_histogram(current_employee)
+
+# correlation between productivity and salary:
+cor(current_employee$productivity,current_employee$salary)
+
+```
+
+
+```{r, echo=FALSE, results='hide', fig.show='hide'}
+# exploratory data analysis for gender wage gap:
+
+# boxplot on productivity grouped by gender:
+plot_boxplot(current_employee, by = "gender", geom_boxplot_args = list("outlier.color" = "red"))
+ggsave("images/productivity_salary_box.png",width = 7, height = 4)
+
+# scatterplot on the rpoductivity by salary grouped by gender:
+ggplot(data = current_employee, aes(x = productivity,y=salary, colour = gender)) +
+  geom_point()
+ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
+```
+![](images/productivity_salary_box.png)
+![](images/productivity_salary_ggplot.png)
+```{r, echo=FALSE, results='hide', fig.show='hide'}
+# fit models for research question 2 
+
+# first model with fixed effects
+model1 <- gls(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, method = "ML")
+summary(model1)
+
+# fixed effects & random effects with individual employee:
+model2 <- lme(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|employee_id, method = "ML")
+```
 
 ## Informative title for section addressing a research question (question 3 Promotion)
 
