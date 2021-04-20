@@ -258,6 +258,10 @@ model2 <- lme(salary ~ gender + team + role_seniority + leadership_for_level + p
 
 ## 3. Is there a gender promotion gap in Black Saber?
 
+The third research question in our project is to identify the impact of gender during the promotion process. We collect the data from the current employees in Black Saber Software, there are total 607 employees have participated this collection. In this data frame, it includes the unique employees’ ID (employee_id), the gender of employee (gender), the team they work in (team), the financial quarter for each record (financial_q), the emplyees’level of senior (role_ seniority), the quality to measure their leadership (leadership_for_level), measure the productivity relative to job description (productivity), and quarter salary that relative to their productivity and leadership (salary).
+
+The first step is to clean and organize this data set, we created a new variable to measure the number of promotion in his/her current career. We use the total level of senior, which is nine, to minus the number of roles that they have experienced. Then we group the productivity by employee_id and calculate the annual salary for each employee. Under each quarter, the firm would measure the performance of each employee to determine their leadership whether satisfy the role requirements, with appropriate, exceed and need improvement categories. Hence, we calculate the appearance of leadership performance from each employee under the three levels. After we finish the organization step, we have built a new data set (new_data) to analysis the impact of gender in promotion process. We choose to use the **Linear Mixed Effects Model**, because the data can separate by different groups that all observations are not completely independent to each other, such as employees can group by team, and also can group by level of senior. Therefore, this model can illustrates the random effect and fixed effect to the response variable, and we would use the likelihood test to determine which model has better performance on the data set.
+
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #create subset for # of promotion:
 num_promoted <- current_employee %>% select(employee_id,role_seniority)
@@ -396,19 +400,9 @@ salary_role_seniority<- lme(salary ~gender+team+role_seniority+leadership_for_le
             random = ~1|role_seniority, method = "ML") #group by role seniority
 summary(salary_role_seniority)
 ```
-Under this linear mixed effects model, it grouped by the position of senior of each employees. For each senior position, the salary would increased by 3330.832 dollars.
+Under this linear mixed effects model, it grouped by the position of senior of each employees that is the random effect of this model. The salary would increased by 3330.832 dollars on average when the level of senior increase. It shows the correlation between each variable, and the summary table illustrates the estimate and p_value of each variable. From the result on above, the female group has a negative correlation with the each level of role seniority, it represents the 
+females are less likely to promote to a relative higher position than males.
 
-
-```{r,echo=FALSE, results='hide', fig.show='hide'}
-salary_leadership <- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
-            random = ~1|leadership_for_level, method = "ML") # group by leadership level
-```
-
-```{r}
-#compare between models:
-anova( salary_role_seniority, salary_leadership) #compare the AIC and BIC of 3 models
-```
-![This anova table shows the AIC, BIC and p_value for each model](images/anova.png)
 
 ## Discussion
 
