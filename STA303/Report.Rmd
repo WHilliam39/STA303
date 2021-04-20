@@ -71,23 +71,20 @@ The key results of the study are summarized in the following tables.
 
 \newpage
 # Technical report
-_This part of the report is much more comprehensive than the executive summary. The audience is statistics/data-minded people, but you should NOT include code or unformatted R output here._
-
 
 ## Introduction
 
-_Provide a brief introduction to your report and outline what the report will cover. This section is valuable for setting scope and expectations. _
+We, White Shield Analytics, accepted a commission from Black Saber Software to conduct an analysis to tell whether there is bias in the process of hiring, promotion and salary. For the analysis of hiring process, Black Saber Software provide data of hiring a new AI recruitment pipeline manager. For promotion and salary, the data of current employee was provided.
 
-### Research questions:
-_Use bullet points to to describe the research questions you are going to address. Write in full sentences._
+In this report, we will use these provided data and conduct statistical analysis to address the following research questions:
 
-* _Q1_
-* _Q2_
-* _Q3_
+- Is the process of hiring fair in genders and based on the skills and abilities of candidates?
+- Is there a gender wage gap in Black Saber?
+- Is there a gender promotion gap in Black Saber?
 
-## Informative title for section addressing a research question (question 1 Hiring)
 
-_For each research question, you will want to briefly describe any data manipulation, show some exploratory plots/summary tables, report on any methods you use (i.e. models you fit) and the conclusions you draw from these_
+## 1. Is the process of hiring fair in genders and based on the skills and abilities of candidates?
+
 ```{r include=FALSE}
 #extract hiring data
 final_hiring<-read_csv("data/final-hires-newgrad_2020.csv")
@@ -116,6 +113,7 @@ all_phase$applicant_id<-as.character(all_phase$applicant_id)
 The data was provided by Black Saber, which is about hiring an AI recruitment pipeline manager. There were totally 613 candidates and finally 10 of them were hired. For each candidate there is a application id as their unique identifier. There were three phases of the hiring process. For the first phase, the department applied for, whether cover letter or CV was provided, GPA, gender, extracurriculars, and internship experience was collected. After phase 1, 313 candidates were filtered. During phase 2, technical skills, writing skills, leadership presence, and speaking skills of each candidates were collected as a scour out of 100. After the review of phase 2, only 22 candidates were left and two interviews were taken for each candidates with a rating out of 100 during phase 3. Finally 10 candidates were hired. 
 
 For each phase, Black Saber provided a data set in csv file with a list of application id of hired candidates. To analyze the whole process of hiring, we join all these 4 tables together so that each row of the data set represents the whole condition of a candidate. If some candidate did not get into phase 2 or phase 3, the corresponding data column will be \texttt{NA}. As for our question, we are interested in the gender parity in the hiring process. First we can look at the ratio of male, female, and prefer not to say within both hired and rejected candidates. 
+
 ```{r}
 #gender distribution on status
 all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+theme_minimal()+
