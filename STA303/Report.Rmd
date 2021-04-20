@@ -6,7 +6,7 @@ date: 2021-04-21
 lang: "en"
 output:
   pdf_document:
-    template: report.tex
+    # template: report.tex
     toc: true
     toc_depth: 2
 titlepage: true
@@ -113,6 +113,9 @@ all_phase<-as.data.frame(unclass(all_phase))
 all_phase$applicant_id<-as.character(all_phase$applicant_id)
 ```
 
+The data was provided by Black Saber, which is about hiring an AI recruitment pipeline manager. There were totally 613 candidates and finally 10 of them were hired. For each candidate there is a application id as their unique identifier. There were three phases of the hiring process. For the first phase, the department applied for, whether cover letter or CV was provided, GPA, gender, extracurriculars, and internship experience was collected. After phase 1, 313 candidates were filtered. During phase 2, technical skills, writing skills, leadership presence, and speaking skills of each candidates were collected as a scour out of 100. After the review of phase 2, only 22 candidates were left and two interviews were taken for each candidates with a rating out of 100 during phase 3. Finally 10 candidates were hired. 
+
+For each phase, Black Saber provided a data set in csv file with a list of application id of hired candidates. To analyze the whole process of hiring, we join all these 4 tables together so that each row of the data set represents the whole condition of a candidate. If some candidate did not get into phase 2 or phase 3, the corresponding data column will be \texttt{NA}. As for our question, we are interested in the gender parity in the hiring process. First we can look at the ratio of male, female, and prefer not to say within both hired and rejected candidates. 
 ```{r}
 #gender distribution on status
 all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+theme_minimal()+
@@ -123,43 +126,59 @@ all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+theme_
   scale_fill_brewer(palette = "Pastel2")
 ggsave("images/hiring_status.png",width = 7, height = 4)
 ```
-![](images/hiring_status.png)
+![Gender Ratio in Hired/Rejected Candidates](images/hiring_status.png)
+
+From \textit{Figure 1}, we can see that in the hired candidates female only account for around 20% and 80% of the hired candidates are male. For the rejected candidates, the ratio of female and male is almost 1 to 1 with only a few candidates prefer not to say. It seems that Black Saber is hiring more male than female, but there could be the case that these hired males are better in skills and abilitirs. To check this, we can look at the ratings and scores in phase 3 and phase 2, and the GPA in phase 1.
+
 ```{r}
 #gender distribution on interview
 all_phase%>%ggplot(aes(x=interviewer_rating_1,y=interviewer_rating_2, color=gender))+geom_point()+theme_minimal()+ylab("Interview 2 rating")+xlab("Interview 1 rating")
 ggsave("images/hiring_interview.png",width = 7, height = 4)
 ```
-![](images/hiring_interview.png)
-```{r}
-#gender distribution on gdp
-all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+ylab("GPA")+coord_flip()+xlab("Hiring Status")+geom_hline(yintercept=3, linetype="dashed",color = "orange")+theme_linedraw()
-ggsave("images/hiring_gdp.png",width = 7, height = 4)
-```
-![](images/hiring_gdp.png)
+![Interview Ratings from Phase 3](images/hiring_interview.png)
+
+According to \textit{Figure x}, although there are fewer females in phase 3 but their rating are greater than or equal to most males. From this figure we could not get helpful information beacuase the number of females is too small and there could be possible bias in rating when the interviews were taken. 
+
 ```{r}
 #gender distribution on technical skill score
 all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10)+ylab("Score")+theme_minimal()+xlab("Technical Skills")
 ggsave("images/hiring_techskill.png",width = 7, height = 4)
 ```
-![](images/hiring_techskill.png)
+![Technical Skills Distribution](images/hiring_techskill.png)
 ```{r}
 #gender distribution on writing skill score
 all_phase%>%ggplot(aes(x=writing_skills,fill=gender))+geom_histogram(binwidth=3)+theme_minimal()+xlab("Writing Skills Score")
 ggsave("images/hiring_writingskill.png",width = 7, height = 4)
 ```
-![](images/hiring_writingskill.png)
+![Writing Skills Distribution](images/hiring_writingskill.png)
 ```{r}
 #gender distribution on speaking skill
 all_phase%>%ggplot(aes(x=speaking_skills,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()
 ggsave("images/hiring_speakingskill.png",width = 7, height = 4)
 ```
-![](images/hiring_speakingskill.png)
+![Speaking Skills DIstribution](images/hiring_speakingskill.png)
 ```{r}
 #gender distribution on leadership pressence
 all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()
 ggsave("images/hiring_leadership.png",width = 7, height = 4)
 ```
-![](images/hiring_leadership.png)
+![Leadership Distribution](images/hiring_leadership.png)
+
+\textit{Figure x} to \textit{Figure x} visualize the abilities of candidates in different genders, which involved technical skills, writing skills, speaking skills, and leadership. 
+
+- From \textit{Figure x}, we can see that for all genders the plot is approximately normally distributed, which makes sense because most of the people are within the median level and those whole are really good at or bad at something are rare. In this case, the gender ratio in next phase should be around 1 to 1. So from this figure there could be some unfair in this process.
+- From \textit{Figure x}, we can see that although it seems approximately normally distributed for all genders but scores of males are higher then females. Therefore, it makes sense that more males passed this phase.
+- From \textit{Figure x} and \textit{Figure x}, there are more males with higher ratings. This also supports the finding from the previous one.
+
+```{r}
+#gender distribution on GPA
+all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+ylab("GPA")+coord_flip()+xlab("Hiring Status")+geom_hline(yintercept=3, linetype="dashed",color = "orange")+theme_linedraw()
+ggsave("images/hiring_gpa.png",width = 7, height = 4)
+```
+![GPA For Rejected and Hired Candidates in Different Gender](images/hiring_gpa.png)
+From \textit{Figure x}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.
+
+From all these figures we could only get an approximate result. To be rigorous and precise, we have to use some statistical models to help the analysis.
 
 ```{r include=FALSE}
 #create binary variable for each of the phase
