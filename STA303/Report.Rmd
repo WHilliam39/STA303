@@ -407,9 +407,8 @@ salary_leadership <- lme(salary ~gender+team+role_seniority+leadership_for_level
 ```{r}
 #compare between models:
 anova( salary_role_seniority, salary_leadership) #compare the AIC and BIC of 3 models
-ggsave("images/anova.png",width = 7, height = 4)
 ```
-![](images/anova.png)
+![This anova table shows the AIC, BIC and p_value for each model](images/anova.png)
 
 ## Discussion
 
