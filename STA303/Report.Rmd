@@ -6,7 +6,7 @@ date: 2021-04-21
 lang: "en"
 output:
   pdf_document:
-    #template: report.tex
+    template: report.tex
     toc: true
     toc_depth: 2
 titlepage: true
