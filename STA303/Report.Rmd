@@ -28,6 +28,7 @@ library(Hmisc)
 library(nlme)
 library(ggbeeswarm)
 library(lmtest)
+
 # this should supress all code and messages
 knitr::opts_chunk$set(include=FALSE)
 ```
@@ -222,14 +223,6 @@ summary(model3)
 ## 2. Is there a gender wage gap in Black Saber?
 
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
-# libraries for research questions 2 and 3
-library(tidyverse)
-library(ggplot2)
-#install.packages("DataExplorer")
-library(DataExplorer)
-library(lme4)
-library(nlme)
-
 # data wrangling for research questions 2 and 3
 
 # read in the data
@@ -263,16 +256,23 @@ cor(current_employee$productivity,current_employee$salary)
 # exploratory data analysis for gender wage gap:
 
 # boxplot on productivity grouped by gender:
-plot_boxplot(current_employee, by = "gender", geom_boxplot_args = list("outlier.color" = "red"))
+plot_boxplot(current_employee, title = "Boxplot of productivity and salary grouped by gender",by = "gender", geom_boxplot_args = list("outlier.color" = "grey"))
 ggsave("images/productivity_salary_box.png",width = 7, height = 4)
 
 # scatterplot on the rpoductivity by salary grouped by gender:
 ggplot(data = current_employee, aes(x = productivity,y=salary, colour = gender)) +
-  geom_point()
+  geom_point(size=0.8)+theme_minimal()+
+  labs(title="Productivity by Salary, Black Saber Software",
+      x="Productivity",
+      y="Salary",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_color_brewer(palette = "Pastel2")
 ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
+
 ```
-![](images/productivity_salary_box.png)
-![](images/productivity_salary_ggplot.png)
+![Box plot of productivity and salary grouped by gender.](images/productivity_salary_box.png)
+![Scatter plot of productivity by salary.](images/productivity_salary_ggplot.png)
+
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
 # fit models for research question 2 
 
