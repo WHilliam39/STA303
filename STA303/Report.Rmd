@@ -119,44 +119,72 @@ all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+theme_
   labs(title="Gender distribution in hiring status, Black Saber Software",
       x="Status",
       y="Percentage",
-      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n","Data as of ",format(Sys.Date(),"%B %d, %Y")))+
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
   scale_fill_brewer(palette = "Pastel2")
 ggsave("images/hiring_status.png",width = 7, height = 4)
 ```
 ![](images/hiring_status.png)
 ```{r}
-#gender distribution on interview
-all_phase%>%ggplot(aes(x=interviewer_rating_1,y=interviewer_rating_2, color=gender))+geom_point()+theme_minimal()+ylab("Interview 2 rating")+xlab("Interview 1 rating")
+#gender distribution on interview score
+all_phase%>%ggplot(aes(x=interviewer_rating_1,y=interviewer_rating_2, color=gender))+geom_point(size=3)+theme_minimal()+
+  labs(title="Interview score with race, Black Saber Software",
+      x="Interview 1 rating",
+      y="Interview 2 rating",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_color_brewer(palette = "Pastel2")
 ggsave("images/hiring_interview.png",width = 7, height = 4)
 ```
 ![](images/hiring_interview.png)
 ```{r}
-#gender distribution on gdp
-all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+ylab("GPA")+coord_flip()+xlab("Hiring Status")+geom_hline(yintercept=3, linetype="dashed",color = "orange")+theme_linedraw()
+#gender distribution on GPA
+all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+coord_flip()+geom_hline(yintercept=3, linetype="dashed",color = "orange")+theme_minimal()+ylim(1,4)+labs(title="Applicant GPA with hiring status, Black Saber Software",
+      x="Hiring Status",
+      y="GPA",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_color_brewer(palette = "Pastel2")
 ggsave("images/hiring_gdp.png",width = 7, height = 4)
 ```
 ![](images/hiring_gdp.png)
 ```{r}
 #gender distribution on technical skill score
-all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10)+ylab("Score")+theme_minimal()+xlab("Technical Skills")
+all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10,size=2)+theme_minimal()+labs(title="Technical skill score distribution with race, Black Saber Software",
+      x="Number of applicants",
+      y="Score",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_color_brewer(palette = "Pastel2")
 ggsave("images/hiring_techskill.png",width = 7, height = 4)
 ```
 ![](images/hiring_techskill.png)
 ```{r}
 #gender distribution on writing skill score
-all_phase%>%ggplot(aes(x=writing_skills,fill=gender))+geom_histogram(binwidth=3)+theme_minimal()+xlab("Writing Skills Score")
+all_phase%>%ggplot(aes(x=writing_skills,fill=gender))+geom_histogram(binwidth=3)+theme_minimal()+
+  labs(title="Writing skill score distribution with race, Black Saber Software",
+      x="Number of applicants",
+      y="Score",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_fill_brewer(palette = "Pastel2")
 ggsave("images/hiring_writingskill.png",width = 7, height = 4)
 ```
 ![](images/hiring_writingskill.png)
 ```{r}
 #gender distribution on speaking skill
-all_phase%>%ggplot(aes(x=speaking_skills,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()
+all_phase%>%ggplot(aes(x=speaking_skills,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()+
+  labs(title="Speaking skill score distribution with race, Black Saber Software",
+      x="Score",
+      y="Percentage",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_fill_brewer(palette = "Pastel2")
 ggsave("images/hiring_speakingskill.png",width = 7, height = 4)
 ```
 ![](images/hiring_speakingskill.png)
 ```{r}
-#gender distribution on leadership pressence
-all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()
+#gender distribution on leadership presence
+all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()+
+  labs(title="Leadership presence score distribution with race, Black Saber Software",
+      x="Score",
+      y="Percentage",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_fill_brewer(palette = "Pastel2")
 ggsave("images/hiring_leadership.png",width = 7, height = 4)
 ```
 ![](images/hiring_leadership.png)
