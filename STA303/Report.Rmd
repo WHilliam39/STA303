@@ -215,7 +215,7 @@ _In this section you will summarize your findings across all the research questi
 
 **Zhaowei Huang**. Zhaowei is a senior consultant with White Shield Analytics. He specializes in data visualization. Zhaowei earned his Bachelor of Science, Majoring in Statistics and Economics, Minoring in Computer Science, from the University of Toronto in 2021. 
 
-**Lingjing Zou**.
+**Lingjing Zou**. Lingjing is a senior consultant with White Shield. She specializes in data analysis and visualization. She finished Bachelor of Science with studying statistics from University of Toronto in 2021. She focuses on creating organizational and reproducible solutions with analysis, documentation and communication.
 
 ## Code of ethical conduct
 
