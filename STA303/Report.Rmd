@@ -277,11 +277,18 @@ ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
 # fit models for research question 2 
 
 # first model with fixed effects
-model1 <- gls(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, method = "ML")
-summary(model1)
+model_salary_fixed <- gls(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, method = "ML")
+summary(model_salary_fixed)
+```
 
-# fixed effects & random effects with individual employee:
-model2 <- lme(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|employee_id, method = "ML")
+```{r, echo=FALSE, results='hide'}
+# fixed effects & random effects with individual team:
+model_salary_mixed <- lme(salary ~ gender + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|team, method = "ML")
+summary(model_salary_mixed)
+```
+
+```{r, echo=FALSE, results='hide'}
+lrtest(model_salary_fixed, model_salary_mixed)
 ```
 
 ## 3. Is there a gender promotion gap in Black Saber?
