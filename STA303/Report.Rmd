@@ -720,21 +720,20 @@ _In this section you will summarize your findings across all the research questi
 
 ## Code of ethical conduct  
 
-The elements have been grouped into four significant areas of responsibility to define the ethical statistical practice of White Shield Analytics.   
-_A. Responsibilities to Science/Public/Funder/Client_  
-1. Strive to explain clearly the foreseeable adverse consequences and effects caused by the violation of the agreed sampling and analysis plan.  
-2. Display clients other statistical method options that differ in size, cost, and accuracy, but are also effective.  
-3. Perform statistical sampling and analysis procedures scientifically without pre-determined conclusions.  
-
-_B. Responsibilities to Data and Methods Integrity_  
-1. Present the limitations and the possible errors of statistical inference.  
-2. Report the data source and evaluate the appropriateness of the data  
-3. explain all the data involved in the research and present the specific sample data used  
-
-_C. Responsibilities to Professional_  
-1. Reduce the presumption and influence of the data provider's preference on the statistical analysis and results.  
-2. Respect other's contributions and intellectual property rights.  
+The mission of White field is to provide solutions and analysis to our clients with high standards statistical services and support . We are committed to demonstrate the professional practices in any stage of our services with the obligation to work in a fair, respectful and ethical manner . The followings are the four major areas of responsibility that define ethical statistical practice in White Shield.  
   
-_D. Responsibilities to Other Statistical Practitioners_  
-1. Improve the quality of the work of others through peer review. When reviewing, respect different opinions, and do not target individuals, only evaluate methods. Strive to complete the review task comprehensively and carefully.  
-2. Instill in students and non-statisticians their understanding of the practical value of the statistical concepts and methods they are learning and applying.  
+A. Responsibilities to Client  
+- Strive to explain clearly the foreseeable adverse consequences and effects caused by the violation of the agreed sampling and analysis plan.  
+- Display clients other statistical method options that differ in size, cost, and accuracy, but are also effective.  
+  
+B. Responsibilities to Data and Methods Integrity  
+- Present the limitations and the possible errors of statistical inference.  
+- Report the data source and evaluate the appropriateness of the data  
+
+C. Responsibilities to Professional  
+- Reduce the presumption and influence of the data provider's preference on the statistical analysis and results.  
+- Respect other's contributions and intellectual property rights.  
+  
+D. Responsibilities to Other Statistical Practitioners  
+- Improve the quality of the work of others through peer review. When reviewing, respect different opinions, and do not target individuals, only evaluate methods. Strive to complete the review task comprehensively and carefully.  
+- Instill in students and non-statisticians their understanding of the practical value of the statistical concepts and methods they are learning and applying.  
