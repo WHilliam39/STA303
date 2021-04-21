@@ -122,7 +122,7 @@ all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+theme_
       x="Status",
       y="Percentage",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_fill_brewer(palette = "Pastel2")
+  scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_status.png",width = 7, height = 4)
 ```
 ![Gender Ratio in Hired/Rejected Candidates](images/hiring_status.png)
@@ -131,12 +131,12 @@ From \textit{Figure 1}, we can see that in the hired candidates female only acco
 
 ```{r}
 #gender distribution on interview score
-all_phase%>%ggplot(aes(x=interviewer_rating_1,y=interviewer_rating_2, color=gender))+geom_point(size=3)+theme_minimal()+
+all_phase%>%ggplot(aes(x=interviewer_rating_1,y=interviewer_rating_2, color=gender))+geom_point(size=2)+theme_minimal()+
   labs(title="Interview score with race, Black Saber Software",
       x="Interview 1 rating",
       y="Interview 2 rating",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_color_brewer(palette = "Pastel2")
+  scale_color_brewer(palette = "Paired")
 ggsave("images/hiring_interview.png",width = 7, height = 4)
 ```
 ![Interview Ratings from Phase 3](images/hiring_interview.png)
@@ -149,7 +149,7 @@ all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+c
       x="Hiring Status",
       y="GPA",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_color_brewer(palette = "Pastel2")
+  scale_color_brewer(palette = "Paired")
 ggsave("images/hiring_gpa.png",width = 7, height = 4)
 ```
 ![GPA For Rejected and Hired Candidates in Different Gender](images/hiring_gpa.png)  
@@ -162,7 +162,7 @@ all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=
       x="Number of applicants",
       y="Score",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_color_brewer(palette = "Pastel2")
+  scale_color_brewer(palette = "Paired")
 ggsave("images/hiring_techskill.png",width = 7, height = 4)
 ```
 ![Technical Skills Distribution](images/hiring_techskill.png)
@@ -173,7 +173,7 @@ all_phase%>%ggplot(aes(x=writing_skills,fill=gender))+geom_histogram(binwidth=3)
       x="Number of applicants",
       y="Score",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_fill_brewer(palette = "Pastel2")
+  scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_writingskill.png",width = 7, height = 4)
 ```
 ![Writing Skills Distribution](images/hiring_writingskill.png)
@@ -184,7 +184,7 @@ all_phase%>%ggplot(aes(x=speaking_skills,fill=gender))+geom_bar(position = "fill
       x="Score",
       y="Percentage",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_fill_brewer(palette = "Pastel2")
+  scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_speakingskill.png",width = 7, height = 4)
 ```
 ![Speaking Skills DIstribution](images/hiring_speakingskill.png)
@@ -195,7 +195,7 @@ all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "
       x="Score",
       y="Percentage",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_fill_brewer(palette = "Pastel2")
+  scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_leadership.png",width = 7, height = 4)
 ```
 ![Leadership Distribution](images/hiring_leadership.png)  
