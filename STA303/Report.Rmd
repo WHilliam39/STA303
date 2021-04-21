@@ -32,18 +32,6 @@ library(lmtest)
 knitr::opts_chunk$set(include=FALSE)
 ```
 
-# General comments (you can delete this section) Test Test 
-
-_You can delete this section, and if you want to check what it said, just open a template from the package again. You don't have to use this particular template, but you DO need to write you report in RMarkdown and include a cover page._
-
-_The cover page must have:_
-
-*	_A title and subtitle_
-* _"Report prepared for Black Saber Software by" your company name_
-*	_Date (assessment submission date is fine)_
-
-_You can change the colour of this cover to any colour you would like by replacing 6C3082 in the YAML above (line 11) to another hex code. You could use this tool to help you:_ https://htmlcolorcodes.com/color-picker/
-
 \newpage
 # Executive summary
 
@@ -74,6 +62,7 @@ The key results of the study are summarized in the following tables.
 
 ## Introduction
 
+<<<<<<< Updated upstream
 We, White Shield Analytics, accepted a commission from Black Saber Software to conduct an analysis to tell whether there is bias in the process of hiring, promotion and salary. For the analysis of hiring process, Black Saber Software provide data of hiring a new AI recruitment pipeline manager. For promotion and salary, the data of current employee was provided.
 
 In this report, we will use these provided data and conduct statistical analysis to address the following research questions:
@@ -82,6 +71,16 @@ In this report, we will use these provided data and conduct statistical analysis
 - Is there a gender wage gap in Black Saber?
 - Is there a gender promotion gap in Black Saber?
 
+=======
+We, White Shield Analytics, accepted a commission from Black Saber Software to conduct an analysis to tell whether there is bias in the process of hiring, promotion and salary. For the analysis of hiring process, Black Saber Software provide data of hiring a new AI recruitment pipeline manager. For promotion and salary, the data of current employee was provided.  
+  
+### Research questions:
+In this report, we will use these provided data to conduct statistical analysis to address the following research questions:
+
+- Is the process of hiring fair in genders and based on the skills and abilities of candidates?
+- Is there a gender wage gap in Black Saber?
+- Is there a gender promotion gap in Black Saber? 
+>>>>>>> Stashed changes
 
 ## 1. Is the process of hiring fair in genders and based on the skills and abilities of candidates?
 
@@ -126,7 +125,11 @@ ggsave("images/hiring_status.png",width = 7, height = 4)
 ```
 ![Gender Ratio in Hired/Rejected Candidates](images/hiring_status.png)
 
+<<<<<<< Updated upstream
 From \textit{Figure 1}, we can see that in the hired candidates female only account for around 20% and 80% of the hired candidates are male. For the rejected candidates, the ratio of female and male is almost 1 to 1 with only a few candidates prefer not to say. It seems that Black Saber is hiring more male than female, but there could be the case that these hired males are better in skills and abilitirs. To check this, we can look at the ratings and scores in phase 3 and phase 2, and the GPA in phase 1.
+=======
+From \textit{Figure 4}, we can see that in the hired candidates female only account for around 20% and 80% of the hired candidates are male. For the rejected candidates, the ratio of female and male is almost 1 to 1 with only a few candidates prefer not to say. It seems that Black Saber is hiring more male than female, but there could be the case that these hired males are better in skills and abilities. To check this, we can look at the ratings and scores in phase 3 and phase 2, and the GPA in phase 1.
+>>>>>>> Stashed changes
 
 ```{r}
 #gender distribution on interview
@@ -135,9 +138,28 @@ ggsave("images/hiring_interview.png",width = 7, height = 4)
 ```
 ![Interview Ratings from Phase 3](images/hiring_interview.png)
 
+<<<<<<< Updated upstream
 According to \textit{Figure x}, although there are fewer females in phase 3 but their rating are greater than or equal to most males. From this figure we could not get helpful information beacuase the number of females is too small and there could be possible bias in rating when the interviews were taken. 
 
 ```{r}
+=======
+According to \textit{Figure 5}, although there are fewer females in phase 3 but their rating are greater than or equal to most males. From this figure we could not get helpful information because the number of females is too small and there could be possible bias in rating when the interviews were taken.   
+
+```{r}
+#gender distribution on GPA
+all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+coord_flip()+geom_hline(yintercept=3, linetype="dashed",color = "orange")+theme_minimal()+ylim(1,4)+labs(title="Applicant GPA with hiring status, Black Saber Software",
+      x="Hiring Status",
+      y="GPA",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_color_brewer(palette = "Pastel2")
+ggsave("images/hiring_gpa.png",width = 7, height = 4)
+```
+![GPA of Rejected and Hired Candidates in Different Gender](images/hiring_gpa.png)
+
+According to \textit{Figure 6}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.  
+
+```{r}
+>>>>>>> Stashed changes
 #gender distribution on technical skill score
 all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10)+ylab("Score")+theme_minimal()+xlab("Technical Skills")
 ggsave("images/hiring_techskill.png",width = 7, height = 4)
@@ -160,6 +182,7 @@ ggsave("images/hiring_speakingskill.png",width = 7, height = 4)
 all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()
 ggsave("images/hiring_leadership.png",width = 7, height = 4)
 ```
+<<<<<<< Updated upstream
 ![Leadership Distribution](images/hiring_leadership.png)
 
 \textit{Figure x} to \textit{Figure x} visualize the abilities of candidates in different genders, which involved technical skills, writing skills, speaking skills, and leadership. 
@@ -177,6 +200,17 @@ ggsave("images/hiring_gpa.png",width = 7, height = 4)
 From \textit{Figure x}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.
 
 From all these figures we could only get an approximate result. To be rigorous and precise, we have to use some statistical models to help the analysis.
+=======
+![Leadership Distribution](images/hiring_leadership.png)  
+  
+\textit{Figure 7} to \textit{Figure 10} visualize the abilities of candidates in different genders, which involved technical skills, writing skills, speaking skills, and leadership.
+
+- From \textit{Figure 7}, we can see that for all genders the plot is approximately normally distributed, which makes sense because most of the people are within the median level and those whole are really good at or bad at something are rare. In this case, the gender ratio in next phase should be around 1 to 1. So from this figure there could be some unfair in this process.  
+- From \textit{Figure 8}, we can see that although it seems approximately normally distributed for all genders but scores of males are higher then females. Therefore, it makes sense that more males passed this phase.  
+- From \textit{Figure 9} and \textit{Figure 10}, there are more males with higher ratings. This also supports the finding from the previous one.  
+
+From all these figures we could only get an approximate result. To be rigorous and precise, we have to use some statistical models to help the analysis. 
+>>>>>>> Stashed changes
 
 ```{r include=FALSE}
 #create binary variable for each of the phase
