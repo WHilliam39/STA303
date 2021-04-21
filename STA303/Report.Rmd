@@ -297,8 +297,15 @@ summary(model_salary_fixed)
 ```
 To investigate the impact of gender on salary, we estimate a **Linear Mixed Effect Model ** model which includes the gender of the employee, the team they belong to, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects. Because we expect that the above elements will have an effect on the salary in a standard linear regression. 
 
+```{r}
+# first model with random effect of individual employee:
+model_salary_fixed <- lme(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|employee_id, method = "ML")
+summary(model_salary_fixed)
+```
+
+
 ```{r, echo=FALSE, results='hide'}
-# fixed effects & random effects with individual team:
+# fixed effects & random effect with individual team:
 model_salary_mixed <- lme(salary ~ gender + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|team, method = "ML")
 summary(model_salary_mixed)
 ```
