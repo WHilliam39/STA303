@@ -20,10 +20,7 @@ titlepage-rule-height: 2
 library(tidyverse)
 library(lme4)
 library(ggplot2)
-library(reshape)
-library(lattice)
 library(DataExplorer)
-library(corrplot)
 library(Hmisc)
 library(nlme)
 library(ggbeeswarm)
@@ -131,16 +128,26 @@ According to \textit{Figure 5}, although there are fewer females in phase 3 but 
 
 ```{r}
 #gender distribution on GPA
-all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+coord_flip()+geom_hline(yintercept=3, linetype="dashed",color = "orange")+theme_minimal()+ylim(1,4)+labs(title="Applicant GPA with hiring status, Black Saber Software",
+all_phase %>% ggplot(aes(x=status,y=gpa, color=gender)) + 
+  geom_quasirandom(size=1) + coord_flip() + 
+  geom_hline(yintercept=3, linetype="dashed",color = "orange") + 
+  theme_minimal() + ylim(1,4) + labs(title="Applicant GPA with hiring status, Black Saber Software",
       x="Hiring Status",
       y="GPA",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
   scale_color_brewer(palette = "Paired")
 ggsave("images/hiring_gpa.png",width = 7, height = 4)
 ```
-![GPA For Rejected and Hired Candidates in Different Gender](images/hiring_gpa.png)  
 
-From \textit{Figure 6}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.  
+
+\begin{centering}
+\begin{figure}
+  \includegraphics[width=0.5\textwidth]{./images/hiring_gpa.png}
+  \caption{GPA Distribution}
+\end{figure}
+\end{centering}
+
+From \textit{Figure 6}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.
 
 ```{r}
 #gender distribution on technical skill score
@@ -204,24 +211,113 @@ all_phase$result<-ifelse(all_phase$applicant_id%in%final_hiring$applicant_id,'Hi
 ```{r include=FALSE}
 #fit mixed logistic regression model
 phase1<-as.data.frame(unclass(phase1))
-model1<-glmer(as.factor(result)~gpa+gender+extracurriculars+work_experience+
-                (1|applicant_id),data = phase1,family = binomial,nAGQ = 10)
-summary(model1)
+# logistic model
+model_phase1<-glm(as.factor(result)~cover_letter+cv+gpa+gender+extracurriculars+work_experience
+                ,data = phase1,family = binomial)
+summary(model_phase1)
+round(confint(model_phase1), 4)
 ```
 
 ```{r include=FALSE}
 #fit mixed logistic regression model
 phase2<-as.data.frame(unclass(phase2))
-model2<-glmer(as.factor(result)~gpa+gender+technical_skills+writing_skills+leadership_presence+speaking_skills+(1|applicant_id),data = phase2,family = binomial)
-summary(model2)
+# logistic model
+model_phase2<-glm(as.factor(result)~gpa+gender+technical_skills+writing_skills+leadership_presence+speaking_skills,data = phase2,family = binomial)
+summary(model_phase2)
+round(confint(model_phase2), 4)
 ```
 
 ```{r include=FALSE}
 #fit mixed logistic regression model
 combine_phase2_phase3<-as.data.frame(unclass(combine_phase2_phase3))
-model3<-glmer(as.factor(result)~gpa+gender+log(interviewer_rating_1)+log(interviewer_rating_2)+(1|applicant_id),data = combine_phase2_phase3,family = binomial)
-summary(model3)
+# average of interview 1 and 2
+combine_phase2_phase3<-combine_phase2_phase3%>%mutate(avg_rating=(interviewer_rating_1+interviewer_rating_2)/2)
+# logistic model
+model_phase3<-glm(as.factor(result)~ gender + avg_rating, data = combine_phase2_phase3, family = binomial)
+summary(model_phase3)
+round(confint(model_phase3), 4)
 ```
+We will use logistic model \texttt{glm} to train our data since the response variable is the outcome of each phase, which is binary. 
+
+For phase 1 we fit model which takes the result of phase 1 as response variable and other data as the dependent variable. From \texttt{R} we could get \textit{Table 1}.
+\begin{table}
+\centering
+\caption{Model paratemters for phase 1}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  Parameter  & Estimation & p-value & 95\%CI \\
+  \hline
+  Intercept & -157.8582 & 0.9774 & [-2326.3357, 19.5074]\\
+  \hline
+  cover letter & 61.3650 & 0.9827 & [-1694.5016, 1260.0174] \\
+  \hline
+  cv & 49.7887 &  0.9917 & [-115.5787, 1848.9455]\\
+  \hline
+  gpa & 12.6333 & 0.0001 & [7.3521, 20.6550] \\
+  \hline
+  genderPrefer not to say  & 0.6266 &  0.9612 & [-8.4199, 10.4821] \\
+  \hline
+  genderWoman & 0.9061 & 0.3531 & [-0.9210, 3.0170] \\
+  \hline
+  extracurriculars & 9.9649 & 5.47e-05 & [6.0431, 16.0484]\\
+  \hline
+  work experience & 11.5861 & 3.62e-05 & [7.1330, 18.3431]\\
+  \hline
+\end{tabular}
+\end{table}
+According to \textit{Table 1}, we can see that only p-value of GPA, extra curriculars experience, and work experience is smaller than the significance level($\alpha=0.05$). Which means only these parameters are significant in this model. And from the 95% confidence interval we can see only confidence intervals for these variables do not include zero, which supports the results from p-value. From this model we can conclude that phase 1 is fair in gender and was based on the talent and ability of candidates.
+
+We did the similar model fitting for phase 2 data and phase 3 data.
+
+For phase two we have parameters in \textit{Table 2}.Like the first model,  we use the result of phase 2 as the response varibale and fitted a logistic model.
+\begin{table}
+\centering
+\caption{Model paratemters for phase 2}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  Parameter  & Estimation & p-value & 95\%CI \\
+  \hline
+  Intercept & -19.7717 & 2.88e-07 & [-28.4751, -13.1651]\\
+  \hline
+  gpa & -0.8578 & 0.2032 & [-2.2542, 0.4401] \\
+  \hline
+  genderPrefer not to say  & -16.4816 &  0.9936 & [NA, 246.3442] \\
+  \hline
+  genderWoman & 0.9061 & 0.3531 & [-2.0804, 0.8164] \\
+  \hline
+  technical skills & 0.0921 & 0.0001 & [0.0516, 0.1462]\\
+  \hline
+  writing skills & 0.1024 & 8.81e-05 & [0.0564, 0.1601]\\
+  \hline
+  leadership presence & 0.9594 & 8.23e-06 & [0.5881, 1.4448]\\
+  \hline
+  speaking skills & 0.7511 & 1.94e-05 & [0.4388, 1.1386]\\
+  \hline
+\end{tabular}
+\end{table}
+
+From \textit{Table 2} we can see that p-values of the four skills are smaller than 0.05, so these parameters are significant. And their 95% CI does not contain 0, which supports the findings from p-value. Also, GPA and gender variables are not significant in this model. This makes sense because these candidates have already been selected based on their GPA in phase 1. Therefore, in this phase the selection of candidates is based on their skills in four aspects: technique, writing, leadership and speaking. And there is no bias on gender in this phase.
+
+Last but not the least, we used the result of phase 3 as the response variable and the average rating of two interviews as dependent variables to fit the third model. The parameters are in \textit{Table 3}.
+
+\begin{table}
+\centering
+\caption{Model paratemters for phase 3}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  Parameter  & Estimation & p-value & 95\%CI \\
+  \hline
+  Intercept & -5839.213 & 0.998 & [-89033.5566, 77355.14]\\
+  \hline
+  genderWoman & -48.19 & 1.000 & [-97841.2789, 111787.35] \\
+  \hline
+  average interview rating  & 76.71 &  0.998 & [-193.5876, 7124.00] \\
+  \hline
+\end{tabular}
+\end{table}
+From \textit{Table 3}, we can see that all p-values are greater than 0.05 and all confidence intervals are very wide and include zero. So in this phase we can conclude that there is no gender bias in the decision of hiring.
+
+In summary, although it seems that more males are finally hired, all these three phases of hiring are fair in gender and the talent, skills and abilities of candidates are the criterion of hiring.
 
 ## 2. Is there a gender wage gap in Black Saber?
 
