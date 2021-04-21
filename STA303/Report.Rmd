@@ -574,9 +574,9 @@ _In this section you will summarize your findings across all the research questi
 # Consultant information
 ## Consultant profiles
 
-**Gancheng Luo**.
+**Gancheng Luo**. Gancheng is the CEO of White Shield Analytics. He founded this company and make it outstanding in the industry. He earned his Bachelor of Science, Majoring in Statistics, Minoring in Computer Science and Mathematics, from the University of Toronto in 2021.
 
-**Ziqi Gao** Ziqi is a senior consultant with White Shield Analytics. She specializes in data analysis and visualization. She earnd her Bachelor of Science, Majoting in Economics and Statistics from the Univerisity of Toronto in 2021.
+**Ziqi Gao** Ziqi is a senior consultant with White Shield Analytics. She specializes in data analysis and visualization. She earned her Bachelor of Science, Majoring in Economics and Statistics from the University of Toronto in 2021.
 
 **Zhaowei Huang**. Zhaowei is a senior consultant with White Shield Analytics. He specializes in data visualization. Zhaowei earned his Bachelor of Science, Majoring in Statistics and Economics, Minoring in Computer Science, from the University of Toronto in 2021. 
 
