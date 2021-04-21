@@ -151,7 +151,7 @@ From \textit{Figure 6}, all candidates that were finally hired have a GPA over 3
 
 ```{r}
 #gender distribution on technical skill score
-all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10,size=2)+theme_minimal()+labs(title="Technical skill score distribution with race, Black Saber Software",
+all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10,size=1.5)+theme_minimal()+labs(title="Technical skill score distribution with race, Black Saber Software",
       x="Number of applicants",
       y="Score",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
@@ -347,17 +347,50 @@ current_employee$salary <- gsub("\\$", "", current_employee$salary)
 current_employee$salary <- gsub("\\,", "", current_employee$salary)
 current_employee$salary <- as.numeric(current_employee$salary)
 
-# basic plot about current_employee data:
-plot_histogram(current_employee)
+# histogram about current_employee data:
+current_employee %>% ggplot(aes(x=productivity, fill=gender)) + geom_histogram(binwidth=3) + theme_minimal() +     
+  labs(title="Frequencies by Productivity, Black Saber Software",
+      x="Frequencies",
+      y="Value of Productivity",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n")) +
+  scale_fill_brewer(palette = "Paired")
+ggsave("images/productivity_histo.png",width = 7, height = 4)
+
+current_employee %>% ggplot(aes(x=salary, fill=gender)) + geom_histogram() + theme_minimal() + 
+  labs(title="Frequencies by Salary, Black Saber Software",
+      x="Frequencies",
+      y="Annual Salary in Dollars",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n")) +
+  scale_fill_brewer(palette = "Paired")
+ggsave("images/salary_histo.png",width = 7, height = 4)
 
 # correlation between productivity and salary:
 cor(current_employee$productivity,current_employee$salary)
 
+# exploratory data analysis for gender wage gap:
+current_employee %>% ggplot(aes(x=productivity, y=gender)) + geom_boxplot() + theme_minimal() + labs(title="Box Plot of Productivity Grouped by Gender, Black Saber Software",
+      x="Productivity",
+      y="Gender",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_color_brewer(palette = "Paired")
+ggsave("images/productivity_box.png",width = 7, height = 4)
+
+current_employee %>% ggplot(aes(x=salary, y=gender)) + geom_boxplot() + theme_minimal() + labs(title="Box Plot of Salaries Grouped by Gender, Black Saber Software",
+      x="Salary",
+      y="Gender",
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
+  scale_color_brewer(palette = "Paired")
+ggsave("images/salary_box.png",width = 7, height = 4)
+
 ```
+![Histgram of Frequencies by Productivity.](images/productivity_histo.png)
 
-To make the raw data more appropriate and useful for our analyzing goal, we change the format of few variables like the team, gender, employee’s ID, level of seniority, and evaluation of leadership to a proper format for later use. Also we reformat the value of salary for each record by deleting the dollar sign $ and remove any empty space and transform all the values into numeric forms.
+![Histgram of Frequencies by Salary.](images/salary_histo.png)
 
-Recall the research question that we want to analyze the fairness of the salary process, so we created a basic histogram to have a look at the frequencies of records on different productivity values and salary numbers. The productivity is close to a symmetric bell curve shape which may imply a normal distribution of productivity of employees. But for the salary, the histogram indicates an accumulation of records around 40,000 dollars per year and there are two small groups of people with higher than usual salaries in the range of 120,000 dollars to 160,000 dollars per year. These extreme high annual pays may come from those employees as executives and senior managers. So in this stage we can raise a concern about the unbalanced relation between productivity and salary. Then we calculate the correlation between the salary and productivity since we want to see how strong the salary and productivity are related in this firm. The value we get is - 0.0356, so productivity is negatively correlated to the salary in a weak correlation, which means that when the value of productivity rises but the salary decreases. 
+To make the raw data more appropriate and useful for our analyzing goal, we change the format of few variables like the team, gender, employee’s ID, level of seniority, and evaluation of leadership to a proper format for later use. Also we reformat the value of salary for each record by deleting the dollar sign '$' and remove any empty space and transform all the values into numeric forms.
+
+
+Recall the research question that we want to analyze the fairness of the salary process, so we created a basic histogram \textit{Figure ?} to have a look at the frequencies of records on different productivity values and salary numbers. The productivity is close to a symmetric bell curve shape which may imply a normal distribution of productivity of employees. But for the salary, the histogram \textit{Figure ?} indicates an accumulation of records around 40,000 dollars per year and there are two small groups of people with higher than usual salaries in the range of 120,000 dollars to 160,000 dollars per year. These extreme high annual pays may come from those employees as executives and senior managers. So in this stage we can raise a concern about the unbalanced relation between productivity and salary. Then we calculate the correlation between the salary and productivity since we want to see how strong the salary and productivity are related in this firm. The value we get is - 0.0356, so productivity is negatively correlated to the salary in a weak correlation, which means that when the value of productivity rises but the salary decreases. 
 
 
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
@@ -378,48 +411,80 @@ ggplot(data = current_employee, aes(x = productivity,y=salary, colour = gender))
 ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
 
 ```
-![Box plot of productivity and salary grouped by gender.](images/productivity_salary_box.png)
+
+![Box plot of productivity grouped by gender.](images/productivity_box.png)
+
+![Box plot of salary grouped by gender.](images/productivity_salary_box.png)
 
 ![Scatter plot of productivity by salary.](images/productivity_salary_ggplot.png)
 
-After having a look at the big picture, we want to focus on the gender parity in salary processing. In the Figure[] which is a boxplot of productivity and salary grouped into woman, Prefer not to say and the man. The man has a comparably lower productivity median but higher salary median, and salary from three groups are positively skewed which also indicates a group of records with high salaries. This is caused by the minimum wage by law and also the natural construction of an organization and company. In the Figure[] which is a scatter of productivity by salary, we still can see there are three major stages that salaries accumulated, the number of women and men seems proportional to the ratio of gender in the company, but also we can see the man occupied the highest salaries on every stage of salaries with a wide range of productivity value.
+After having a look at the big picture, we want to focus on the gender parity in salary processing. In the \textit{Figure ?} and \textit{Figure ?} which are box plots of productivity and salary grouped into woman, Prefer not to say and the man. The man has a comparably lower productivity median but higher salary median, and salary from three groups are positively skewed which also indicates a group of records with high salaries. This is caused by the minimum wage by law and also the natural construction of an organization and company. In the \textit{Figure ?} which is a scatter plot of productivity by salary, we still can see there are three major stages that salaries accumulated, the number of women and men seems proportional to the ratio of gender in the company, but also we can see the man occupied the highest salaries on every stage of salaries with a wide range of productivity value.
 
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
 # fit models for research question 2 
 
-# first model with fixed effects
-model_salary_fixed <- gls(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, method = "ML")
-summary(model_salary_fixed)
+# first linear regression model1 with fixed effects
+salary_simple_lm = lm(salary~gender + team + role_seniority + leadership_for_level + productivity, data=current_employee)
+summary(salary_simple_lm)
+confint(salary_simple_lm)
 ```
-To investigate the impact of gender on salary, we estimate a **Linear Mixed Effect Model ** model which includes the gender of the employee, the team they belong to, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects. Because we expect that the above elements will have an effect on the salary in a standard linear regression. 
+To investigate the impact of gender on salary, we estimate a **Linear Regression** model 1 which includes the gender of the employee, the team they belong to, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects. Because we expect that the above elements will have an effect on the salary in a standard linear regression, and we would like to know how they affect the salary. 
 
 ```{r}
-# first model with random effect of individual employee:
-model_salary_fixed <- lme(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|employee_id, method = "ML")
-summary(model_salary_fixed)
-```
+# second linear mixed effect model2 with random effect of distinct team:
+salary_mixed_1 <- lmer(salary~gender + gender + role_seniority  + leadership_for_level + productivity + (1|team), data=current_employee)
+summary(salary_mixed_1)
+#confint(salary_mixed_1)
 
+```
+The second model 2 we use **Linear Mixed Effect Model ** which includes the team as a random effect on the salary to improve the previous model 1. This is because the team is categorized and the beneficial results or leadership of the manager in different teams may have varied effects on salary, and we would like to know how much variation is contributed to this when we estimate the salary. Fixed effects in the model included gender of the employee, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects.
 
 ```{r, echo=FALSE, results='hide'}
-# fixed effects & random effect with individual team:
-model_salary_mixed <- lme(salary ~ gender + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|team, method = "ML")
-summary(model_salary_mixed)
+options(scipen=999)
+# third linear fixed effect model3 with random effect with individual employee and distinct team:
+salary_mixed_2 <- lmer(salary~gender + gender + role_seniority + leadership_for_level + productivity + (1|team) + (1|employee_id), data=current_employee )
+
+summary(salary_mixed_2)
+confint(salary_mixed_2)
 ```
-The second model we use **Linear Mixed Effect Model ** which includes the team as a random effect on the salary to improve the previous model. This is because the team is categorized and the beneficial results or leadership of the manager in different teams may have varied effects on salary, and we would like to know how much variation is contributed to this when we estimate the salary. Fixed effects in the model included gender of the employee, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects.
+The third model 3 we use **Linear Mixed Effect Model ** which includes the individual employee as a random effect on the salary to improve the previous model 2. This is because one employee might have many records in the data set and for each of them may have ability and talent in different levels, and we would like to know how much variation is contributed to this when we estimate the salary. Fixed effects in the model is the same as above included gender of the employee, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects.
 
 ```{r, echo=FALSE, results='hide'}
-lrtest(model_salary_fixed, model_salary_mixed)
+lrtest(salary_simple_lm, salary_mixed_1)
+lrtest(salary_mixed_1, salary_mixed_2)
 ```
-We conduct a likelihood ratio test to find a final model, and we can see the p-value is quite low as 1.27e-09. This tells us that the complex model with the team as a random effect is significantly more accurate, so we will move forward with the second linear mixed effect model for further interpretations.
+We conduct a likelihood ratio tests to find a final model, and we can see from two test (between model 1 and model 2 and between model 2 and model 3 )the p-value is quite low and same as 1.27e-09. This tells us that the most complex model 3 with the team and individual employee as random effects is significantly more accurate than rest two models, so we will move forward with the third linear mixed effect model 3 for further interpretations.
 
-In the results of the second model, we see a highly significant negative effect of gender as women with their annual pay. The value is -1786.98 with the p-value of 0.0000 which means strong evidence of effect on salary.  In other words, women may earn about 1787 dollars less annually than men under the same conditions.  Furthermore, we see that there is a weak tendency for hard working employees are more likely to have higher pays, since the value of effect on productivity is positive 1.83 but with a little evidence to see with big p-value 0.5258. 
+\begin{table}
+\centering
+\caption{Model Paratemters From Model 3}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Parameter  & Estimation & 95\%Confidence Interval &\\
+  \hline
+  intercept & 122751.1011 & [121574.2580, 123902.9252]\\
+  \hline
+  gender prefer not to say & -1087.1097 & [-3101.6608, 945.5988] \\
+  \hline
+  gender woman & -2259.1905 & [-2802.9678, -1722.0322]\\
+  \hline
+  level exceeds expectations & -4.3367 & [-142.8119, 134.1472] \\
+  \hline
+  level needs improvement & 245.2283 &  [62.0527, 428.4788]\\
+  \hline
+  productivity  & -0.8518 & [-3.2015, 1.4963] \\
+  \hline
+\end{tabular}
+\end{table}
 
-In summary, after analyzing the records of current employees and fitting a linear mixed effect model to help us make interpretations, there is a gender wage gap in Black Saber based on current situation and the tendency that more productive and talented employees could have higher wages is weak. 
+In the \textit{Table ?} of the third model 3, we see some import values from model 3. In this table, we found a highly significant negative effect of gender as women indicated by an 95\% confidence from -2802.9678 to -1722.0322 interval which doesn't contain 0. The value is -2259.1905 which means women may earn 1787 dollars less annually than men under the same conditions. Furthermore, we see that there is a weak tendency for hard working employees are more likely to have lower pays, since the interval is from -3.2015 to 1.4963 and covers 0, so the evidence is not strong enough to conclude. Also there is a interesting thing to notice that the employees who needs improvements at their levels actually has a positive affect with 245.2283 dollars on their salary under this condition.
+
+In summary, after analyzing the records of current employees and fitting an appropriate linear mixed effect model to help us make interpretations, there is a gender wage gap in Black Saber based on current situation and our model. What's more, there is a tendency that the factor of needing improvements actually affect salaries positively. 
 
 
 ## 3. Is there a gender promotion gap in Black Saber?
 
-The third research question in our project is to identify the impact of gender during the promotion process. We collect the data from the current employees in Black Saber Software, there are total 607 employees have participated this collection. In this data frame, it includes the unique employees’ ID (employee_id), the gender of employee (gender), the team they work in (team), the financial quarter for each record (financial_q), the emplyees’level of senior (role_ seniority), the quality to measure their leadership (leadership_for_level), measure the productivity relative to job description (productivity), and quarter salary that relative to their productivity and leadership (salary).
+The third research question in our project is to identify the impact of gender during the promotion process. We use the same data set that used in the second research question that talks about whether there exist a gender salary gap in Black Saber Software.
 
 The first step is to clean and organize this data set, we created a new variable to measure the number of promotion in his/her current career. We use the total level of senior, which is nine, to minus the number of roles that they have experienced. Then we group the productivity by employee_id and calculate the annual salary for each employee. Under each quarter, the firm would measure the performance of each employee to determine their leadership whether satisfy the role requirements, with appropriate, exceed and need improvement categories. Hence, we calculate the appearance of leadership performance from each employee under the three levels. After we finish the organization step, we have built a new data set (new_data) to analysis the impact of gender in promotion process. We choose to use the **Linear Mixed Effects Model**, because the data can separate by different groups that all observations are not completely independent to each other, such as employees can group by team, and also can group by level of senior. Therefore, this model can illustrates the random effect and fixed effect to the response variable, and we would use the likelihood test to determine which model has better performance on the data set.
 
@@ -480,39 +545,6 @@ str(new_data)
 ```
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
-#fixed effects & random effects:
-salary_role_seniority<- lme(salary ~gender+team+role_seniority+leadership_for_level+productivity,data=current_employee,
-            random = ~1|role_seniority, method = "ML") #group by role seniority
-summary(salary_role_seniority)
-```
-Under this linear mixed effects model, it grouped by the position of senior of each employees that is the random effect of this model. The salary would increased by 3330.832 dollars on average when the level of senior increase. It shows the correlation between each variable, and the summary table illustrates the estimate and p_value of each variable. From the result on above, the female group has a negative correlation with the each level of role seniority, it represents the 
-females are less likely to promote to a relative higher position than males.
-
-```{r,echo=FALSE, results='hide', fig.show='hide'}
-#Fit model:
-#fixed effects & random effects:
-#number of promotions as outcome variable:
-model_num_promote <- lme(num_promoted ~
-                           gender+team+leadership_appropriate,
-                         data=new_data,random = ~1|employee_id, method = "ML")
-summary(model_num_promote)
-```
-Under the **Linear Mixed Effects Models**, we have build a model to describe the relationship between the number of promotion and average productivity, gender and team groups, and group by employees' ID. From the model, it illustrates that the number of promotion would decreased by 0.2867 point in average when the employee is female rather than male. In addition, the p-value in female group is 0.0000, which is much less than 0.05, it represents the female group has a significant effect in this model, and it provide a strong evidence to reject the null hypothesis (everyone has the equal opportunity on promotions)
-
-```{r,echo=FALSE, results='hide', fig.show='hide'}
-model_promote_productivity<- lme(num_promoted~
-                             gender+team+leadership_appropriate+avg_productivity,
-                           data=new_data,random = ~1|employee_id, method = "ML")
-summary(model_promote_productivity)
-```
-Under this liner mixed effect model, it adds a new variable to show the effect on whether the employee's leadership ability is exceed than the requirements of the level to the opportunity to promoted. From this model, the women group also has a less number of promotion than the men, but the p-value of productivity in this model is greater than 0.05, which is 0.0768. Then it represents the changing of productivity does not provide a significance difference on number of employee's promotion.
-
-```{r}
-lrtest(model_num_promote,model_promote_productivity)
-```
-By using the likelihood ratio test, we can find that the likelihood ratio Chi-Squared statistic and the p-value is greater than 0.05, which is 0.07373, it represents the average productivity is not an important effect when the employees have the chance to promote. On the other hand, from the boxplot result between gender and productivity, it shows that the mean of productivity in female group is higher than the male group. After combine the two results, the female group perhaps has few number of promotion and less opportunity to promote than the male.
-
-```{r,echo=FALSE, results='hide', fig.show='hide'}
 #EDA:
 # scatterplot on the productivity by number of promoted grouped by gender:
 ggplot(data = new_data, aes(x = avg_productivity,y=num_promoted, colour = gender)) +
@@ -520,10 +552,10 @@ ggplot(data = new_data, aes(x = avg_productivity,y=num_promoted, colour = gender
   theme_minimal()+
   labs(title = "Gender distribution in productivity and number of promoted",
        caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),x="Average productivity",y="Numbers of promotion")+
-  scale_color_brewer(palette = "Pastel2")
+  scale_color_brewer(palette = "Paired")
 ggsave("images/promotion_productivity.png",width = 7, height = 4)
 ```
-![Gender Distribution on productivity by number of promotion. The females group concentrates on one or two times of promotion, though she has relative larger productivity than the males. The males group has more times to promoted than females. ](images/promotion_productivity.png)
+![Gender Distribution on productivity by number of promotion.](images/promotion_productivity.png)
 
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
@@ -533,10 +565,14 @@ ggplot(current_employee, aes(role_seniority, ..count..)) + geom_bar(aes(fill = g
   theme_minimal()+
   labs(title = "Gender distribution in role senority",
        caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),y="Percentage",x="Role Seniority")+
-  scale_fill_brewer(palette = "Pastel2")
+  scale_fill_brewer(palette = "Paired")
 ggsave("images/gender_role_senority.png",width = 7, height = 4)
 ```
-![Gender Ratio in Role Senority. The men has occupied a larger percentage when the position increases.](images/gender_role_senority.png)
+![Gender Ratio in Role Senority.](images/gender_role_senority.png)
+
+-From \textit{Figure ?}, we can see that the females group concentrates on one or two times of promotion, though she has relativly larger productivity than the males. The distribution of the males is more concentrated in the center of productivity and a larger number of promotion. 
+
+-From\textit{Figure ?}, it illusrates that the males group has more chance to promoted than females because the men has occupied a larger percentage when the position increases.
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #scatterplot on the leadership exceed expectation and number of promoted
@@ -545,10 +581,10 @@ ggplot(data = new_data, aes(x = leadership_exceeds,y=num_promoted,colour = gende
   theme_minimal()+
   labs(title = "Gender distribution in leadership exceed expectation and number of promoted",
        caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),y="Leadership exceeds", x="Numbers of promotion")+
-  scale_color_brewer(palette = "Pastel2")
+  scale_color_brewer(palette = "Paired")
 ggsave("images/promotion_exceeds_leadship.png",width = 7, height = 4)
 ```
-![Gender Distribution on exceeded leadership by the number of promotion. The majority of employees' leadership exceed their expectation are males.](images/promotion_exceeds_leadship.png)
+![Gender Distribution on exceeded leadership by the number of promotion.](images/promotion_exceeds_leadship.png)
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #leadership for level on gender:
@@ -557,12 +593,112 @@ ggplot(current_employee, aes(leadership_for_level, ..count..)) +
   theme_minimal()+
   labs(title = "Gender distribution in leadership level",
        caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"),x="Leadership levels",y="Percentage")+
-  scale_fill_brewer(palette = "Pastel2")
+  scale_fill_brewer(palette = "Paired")
 ggsave("images/gender_leadership.png",width = 7, height = 4)
 ```
-![Gender Ratio in Leadership Level. The gender in "leadership exceed expectation" category is only men, and the female has occupied above 90% in "leadership needs to improve" category](images/gender_leadership.png)
+![Gender Ratio in Leadership Level.](images/gender_leadership.png)
 
-In conclusion, after analysis the linear mixed effect model with number of promotion, gender, team and leadership performance, the result shows that number of promotion would decreased by 0.2867 point in average when the employee is female rather than male, and this effect is significant in this model. From the four graphs above, the main idea is the males occupied a relative large percentage in all nine senior position, and female group has a relative smaller number to be promoted within a same level of productivity. Therefore, the gender perhaps affect the promotion process and result in Black Saber Software.
+-From \textit{Figure ?}, we can see that the majority of employees' leadership exceed their expectation are males.
+
+-From \textit{Figure ?}, we can see that the gender in "leadership exceed expectation" category is only men, and the female has occupied above 90% in "leadership needs to improve" category.
+
+```{r,echo=FALSE, results='hide', fig.show='hide'}
+#fixed effects & random effects:
+salary_role_seniority<- lmer(salary ~gender+team+role_seniority+leadership_for_level+productivity+(1|role_seniority),data=current_employee) #group by role seniority
+summary(salary_role_seniority)
+confint(salary_role_seniority)
+```
+\begin{table}
+\centering
+\caption{Model parameter of role seniority}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Parameter & Estimation & 95\%CI\\
+  \hline
+  Intercept & 120708.379 & [ 120177.2198,121239.5377]
+  \hline
+  genderPrefer not to say &-1285.765 &[-1906.3641,  -665.1654]
+  \hline
+  genderWomen &-1785.606  &[ -1959.2665,-1611.9447]
+  \hline
+  teamData & 3796.712 & [3505.4989, 4087.9253]
+  \hline
+  role_seniorityEntry-level & -91071.229 & [-91540.3688, -90602.0901]
+  
+
+Under this **linear mixed effects model**, it grouped by the position of senior of each employees that is the random effect of this model. There are much difference in salary between the senior groups different. It shows the correlation between each variable, and the summary table illustrates the estimate and 95% confidence interval of each variable. From the \textit{Table ?} on above, the female group has a negative relationship with the salary in each role seniority group, it represents the females earned relative less salary than males in each senior position. Moreover, the team they work with and the senior level have significant effect in this salary model due to their 95% confidence interval does not contain zero. It means the changing in team and role_seniority variables would provide an obvious difference in their salary that is suitable with our common sense.
+
+```{r,echo=FALSE, results='hide', fig.show='hide'}
+#Fit model:
+#fixed effects & random effects:
+#number of promotions as outcome variable:
+model_num_promote <- lmer(num_promoted ~
+                           gender+team+leadership_appropriate+(1|leadership_appropriate),
+                         data=new_data)
+summary(model_num_promote)
+confint(model_num_promote)
+```
+\begin{table}
+\centering
+\caption{Model parameters from number of promotion}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Parameter & Estimation & 95\%CI\\
+  \hline
+  Intercept &  0.9337  & [ 0.7202,1.1520]
+  \hline
+  genderWomen & -0.2943  &[ -0.4267, -0.1604]
+  \hline
+  leadership\_appropriate & 0.1157 &[0.1033,0.1276]
+  
+  
+Under the **Linear Mixed Effects Models**, we have build a model to describe the relationship between the number of promotion and average productivity, gender and team groups, and group by leadership appropriate of employees. From the \textit{Table ?}l, it illustrates that the number of promotion would decreased by 0.2943 point in average when the employee is female rather than male. In addition, the 95% confidence interval in women group does not contain zero, it represents the female group has a significant effect in this model, and it provide a strong evidence to reject the null hypothesis (everyone has the equal opportunity on promotions)
+
+```{r,echo=FALSE, results='hide', fig.show='hide'}
+model_promote_productivity<- lmer(num_promoted~
+                          gender+team+leadership_appropriate+avg_productivity+(1|leadership_appropriate),
+                           data=new_data)
+summary(model_promote_productivity)
+confint(model_promote_productivity)
+```
+\begin{table}
+\centering
+\caption{Model parameter from promotion productivity}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Parameter & Estimation & 95\%CI\\
+  \hline
+  Intercept &  0.6567  & [ 0.3205, 0.9903]
+  \hline
+  genderWomen & -0.3020  &[ -0.4340,-0.1684]
+  \hline
+  leadership\_appropriate & 0.1163 &[0.1036, 0.1285]
+  \hline
+  avg\_productivity & 0.0055 &[0.0004, 0.0104]
+
+Under this **liner mixed effect model**, it adds a new variable to show the effect on the average productivity to the opportunity to promoted. From the \textit{Table ?}, the women group also has a less number of promotion than the men, and the 95% confidence interval of women do not contain zero, which means gender has a significant impact on the number of promotion. This result is as same as the previous model. Moerover, the 95% confidence interval of average productivity effect does not include zero, it represents the changing of productivity provide a significance difference on number of employee's promotion.
+
+```{r}
+lrtest(model_num_promote,model_promote_productivity)
+AIC(model_num_promote,model_promote_productivity)
+BIC(model_num_promote,model_promote_productivity)
+```
+\begin{table}
+\centering
+\caption{Likelihood ratio test table}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Model & #DF & AIC & BIC & LogLik & Chisq & Pr(>Chisq)\\
+  \hline
+  num\_promote & 13 & 1490.727 & 1548.038	 & -732.36 
+  \hline
+  promote\_productivity & 14 & 1498.344 & 1560.063 & -735.17 & 5.6169 & 0.0178
+
+
+By using the likelihood ratio test table \textit{Table ?}, we can find that the likelihood ratio Chi-Squared statistic and the p-value is smaller than 0.05, which is 0.0178, it represents the average productivity is an important effect when the employees have the chance to promote. However, from the AIC and BIC value, the model without productivity effect has a relatively smaller value, it represents this model perform better on fitting this data set. After combine the two model results, the female group perhaps has few number of promotion and less opportunity to promote than the male, though the there is not exist an obvious different about productivity in the male and female groups from the \textit{Figure ?}.
+
+
+In conclusion, after analysis the linear mixed effect model with number of promotion, gender, team and leadership performance, the result shows that number of promotion would decreased by 0.2943 point in average when the employee is female rather than male, and this effect is significant in this model. From the four graphs above, the main idea is the males occupied a relative large percentage in all nine senior position, and female group has a relative smaller number to be promoted within a same level of productivity. Therefore, the gender perhaps affect the promotion process and result in Black Saber Software.
 
 ## Discussion
 
