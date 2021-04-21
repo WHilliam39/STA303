@@ -140,12 +140,13 @@ ggsave("images/hiring_gpa.png",width = 7, height = 4)
 ```
 
 
-\begin{centering}
+
 \begin{figure}
+\centering
   \includegraphics[width=0.5\textwidth]{./images/hiring_gpa.png}
   \caption{GPA Distribution}
 \end{figure}
-\end{centering}
+
 
 From \textit{Figure 6}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.
 
@@ -460,7 +461,7 @@ We conduct a likelihood ratio tests to find a final model, and we can see from t
 \caption{Model Paratemters From Model 3}
 \begin{tabular}{|c|c|c|}
   \hline
-  Parameter  & Estimation & 95\%Confidence Interval &\\
+  Parameter  & Estimation & 95\%Confidence Interval \\
   \hline
   intercept & 122751.1011 & [121574.2580, 123902.9252]\\
   \hline
@@ -570,9 +571,8 @@ ggsave("images/gender_role_senority.png",width = 7, height = 4)
 ```
 ![Gender Ratio in Role Senority.](images/gender_role_senority.png)
 
--From \textit{Figure ?}, we can see that the females group concentrates on one or two times of promotion, though she has relativly larger productivity than the males. The distribution of the males is more concentrated in the center of productivity and a larger number of promotion. 
-
--From\textit{Figure ?}, it illusrates that the males group has more chance to promoted than females because the men has occupied a larger percentage when the position increases.
+- From \textit{Figure ?}, we can see that the females group concentrates on one or two times of promotion, though she has relativly larger productivity than the males. The distribution of the males is more concentrated in the center of productivity and a larger number of promotion. 
+- From\textit{Figure ?}, it illusrates that the males group has more chance to promoted than females because the men has occupied a larger percentage when the position increases.
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #scatterplot on the leadership exceed expectation and number of promoted
@@ -615,16 +615,18 @@ confint(salary_role_seniority)
   \hline
   Parameter & Estimation & 95\%CI\\
   \hline
-  Intercept & 120708.379 & [ 120177.2198,121239.5377]
+  Intercept & 120708.379 & [ 120177.2198,121239.5377]\\
   \hline
-  genderPrefer not to say &-1285.765 &[-1906.3641,  -665.1654]
+  genderPrefer not to say &-1285.765 &[-1906.3641,  -665.1654]\\
   \hline
-  genderWomen &-1785.606  &[ -1959.2665,-1611.9447]
+  genderWomen &-1785.606  &[ -1959.2665,-1611.9447]\\
   \hline
-  teamData & 3796.712 & [3505.4989, 4087.9253]
+  teamData & 3796.712 & [3505.4989, 4087.9253]\\
   \hline
-  role_seniorityEntry-level & -91071.229 & [-91540.3688, -90602.0901]
-  
+  role\_seniorityEntry-level & -91071.229 & [-91540.3688, -90602.0901]\\
+  \hline
+\end{tabular}
+\end{table}
 
 Under this **linear mixed effects model**, it grouped by the position of senior of each employees that is the random effect of this model. There are much difference in salary between the senior groups different. It shows the correlation between each variable, and the summary table illustrates the estimate and 95% confidence interval of each variable. From the \textit{Table ?} on above, the female group has a negative relationship with the salary in each role seniority group, it represents the females earned relative less salary than males in each senior position. Moreover, the team they work with and the senior level have significant effect in this salary model due to their 95% confidence interval does not contain zero. It means the changing in team and role_seniority variables would provide an obvious difference in their salary that is suitable with our common sense.
 
@@ -645,11 +647,14 @@ confint(model_num_promote)
   \hline
   Parameter & Estimation & 95\%CI\\
   \hline
-  Intercept &  0.9337  & [ 0.7202,1.1520]
+  Intercept &  0.9337  & [ 0.7202,1.1520]\\
   \hline
-  genderWomen & -0.2943  &[ -0.4267, -0.1604]
+  genderWomen & -0.2943  &[ -0.4267, -0.1604]\\
   \hline
-  leadership\_appropriate & 0.1157 &[0.1033,0.1276]
+  leadership\_appropriate & 0.1157 &[0.1033,0.1276]\\
+  \hline
+\end{tabular}
+\end{table}
   
   
 Under the **Linear Mixed Effects Models**, we have build a model to describe the relationship between the number of promotion and average productivity, gender and team groups, and group by leadership appropriate of employees. From the \textit{Table ?}l, it illustrates that the number of promotion would decreased by 0.2943 point in average when the employee is female rather than male. In addition, the 95% confidence interval in women group does not contain zero, it represents the female group has a significant effect in this model, and it provide a strong evidence to reject the null hypothesis (everyone has the equal opportunity on promotions)
@@ -668,13 +673,16 @@ confint(model_promote_productivity)
   \hline
   Parameter & Estimation & 95\%CI\\
   \hline
-  Intercept &  0.6567  & [ 0.3205, 0.9903]
+  Intercept &  0.6567  & [ 0.3205, 0.9903]\\
   \hline
-  genderWomen & -0.3020  &[ -0.4340,-0.1684]
+  genderWomen & -0.3020  &[ -0.4340,-0.1684]\\
   \hline
-  leadership\_appropriate & 0.1163 &[0.1036, 0.1285]
+  leadership\_appropriate & 0.1163 &[0.1036, 0.1285]\\
   \hline
-  avg\_productivity & 0.0055 &[0.0004, 0.0104]
+  avg\_productivity & 0.0055 &[0.0004, 0.0104]\\
+  \hline
+\end{tabular}
+\end{table}
 
 Under this **liner mixed effect model**, it adds a new variable to show the effect on the average productivity to the opportunity to promoted. From the \textit{Table ?}, the women group also has a less number of promotion than the men, and the 95% confidence interval of women do not contain zero, which means gender has a significant impact on the number of promotion. This result is as same as the previous model. Moerover, the 95% confidence interval of average productivity effect does not include zero, it represents the changing of productivity provide a significance difference on number of employee's promotion.
 
@@ -686,13 +694,16 @@ BIC(model_num_promote,model_promote_productivity)
 \begin{table}
 \centering
 \caption{Likelihood ratio test table}
-\begin{tabular}{|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|}
   \hline
-  Model & #DF & AIC & BIC & LogLik & Chisq & Pr(>Chisq)\\
+  Model & \#DF & AIC & BIC & LogLik & Chisq & Pr(>Chisq)\\
   \hline
-  num\_promote & 13 & 1490.727 & 1548.038	 & -732.36 
+  num\_promote & 13 & 1490.727 & 1548.038	 & -732.36 \\
   \hline
-  promote\_productivity & 14 & 1498.344 & 1560.063 & -735.17 & 5.6169 & 0.0178
+  promote\_productivity & 14 & 1498.344 & 1560.063 & -735.17 & 5.6169 & 0.0178\\
+  \hline
+\end{tabular}
+\end{table}
 
 
 By using the likelihood ratio test table \textit{Table ?}, we can find that the likelihood ratio Chi-Squared statistic and the p-value is smaller than 0.05, which is 0.0178, it represents the average productivity is an important effect when the employees have the chance to promote. However, from the AIC and BIC value, the model without productivity effect has a relatively smaller value, it represents this model perform better on fitting this data set. After combine the two model results, the female group perhaps has few number of promotion and less opportunity to promote than the male, though the there is not exist an obvious different about productivity in the male and female groups from the \textit{Figure ?}.
@@ -722,18 +733,18 @@ _In this section you will summarize your findings across all the research questi
 
 The mission of White field is to provide solutions and analysis to our clients with high standards statistical services and support . We are committed to demonstrate the professional practices in any stage of our services with the obligation to work in a fair, respectful and ethical manner . The followings are the four major areas of responsibility that define ethical statistical practice in White Shield.  
   
-A. Responsibilities to Client  
+### A. Responsibilities to Client  
 - Strive to explain clearly the foreseeable adverse consequences and effects caused by the violation of the agreed sampling and analysis plan.  
 - Display clients other statistical method options that differ in size, cost, and accuracy, but are also effective.  
   
-B. Responsibilities to Data and Methods Integrity  
+### B. Responsibilities to Data and Methods Integrity  
 - Present the limitations and the possible errors of statistical inference.  
 - Report the data source and evaluate the appropriateness of the data  
 
-C. Responsibilities to Professional  
+### C. Responsibilities to Professional  
 - Reduce the presumption and influence of the data provider's preference on the statistical analysis and results.  
 - Respect other's contributions and intellectual property rights.  
   
-D. Responsibilities to Other Statistical Practitioners  
+### D. Responsibilities to Other Statistical Practitioners  
 - Improve the quality of the work of others through peer review. When reviewing, respect different opinions, and do not target individuals, only evaluate methods. Strive to complete the review task comprehensively and carefully.  
 - Instill in students and non-statisticians their understanding of the practical value of the statistical concepts and methods they are learning and applying.  
