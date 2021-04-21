@@ -6,6 +6,7 @@ date: 2021-04-21
 lang: "en"
 output:
   pdf_document:
+    latex_engine: xelatex
     template: report.tex
     toc: true
     toc_depth: 2
@@ -14,6 +15,9 @@ titlepage-color: "20283E"
 titlepage-text-color: "FFFFFF"
 titlepage-rule-color: "FFFFFF"
 titlepage-rule-height: 2
+header-includes:
+  - \usepackage{float}
+  - \usepackage{graphicx}
 ---
 
 ```{r message=FALSE, include=FALSE}
@@ -32,27 +36,36 @@ knitr::opts_chunk$set(include=FALSE)
 \newpage
 # Executive summary
 
-_Guidelines for the executive summary:_
+Black Saber Software (BSS), a technology company, has no data collection on its current and new staff members' race or ethnicity. In order to optimize the electronic technology interaction (EDI) and test fairness, this study assesses every three dimensions in hiring, salary, and promotion based on the existing employees and hiring data from BSS.
 
-* _No more than two pages_
-* _Language is appropriate for a non-technical audience_
-* _Bullet points are used where appropriate_
-*	_A small number of key visualizations and/or tables are included_
-*	_All three research questions are addressed_
+We estimate that, in each hiring, salary and promotion dimension, applicants' ability and their technical test ratings are more influential than other factors in the recruitment process; salary and promotion, however, indicate a gap between males and females.
 
-(add more)This study assesses ethnicity/race fairness in hiring, promotion, and salary processes based on the existing employees and hiring data from Black Saber Software.   
+The results of the study are summarized below.
 
-We estimate that, 
+- For Hiring Process:
+  - The hiring initial application phase has no bias on race, but only GPA, previous work experience, and extracurricular.
+  - The technical task, hiring phase two, mainly concentrated on applicants' writing, speaking, technical skill and leadership presence scores.
+  - Final hiring data shows a gender preference in newly hired employees with respect to the proportion of males and females. However, in the interview section, recruitment phase three, indicates that none of the factors, in terms of gender, interview rating, would affect the final hiring results; namely, no factor bias.
+- For Salary:
+  - In 2021, there are 607 employees with annual wages in a range of 25,000 dollars to 154,200 dollars per year in Blakc Saber. 
+  - When men and women have the same employment characteristics and job functions in Black Saber, women earn 2259 dollars less than an equivalent man annually. The group employees with gender(prefer not to say) are also likely to earn less than men with weak evidence.
+  - The group of employees who need improvements at their levels are benefited with around 245 dollars per year than the people who are qualified or exceed the expectation of their levels.
+- For Promotion:
+  - The males have occupied a larger percentage that more than half in all the nine senior positions, the Vice President with the largest percentage in males, which is 70%.
+  - The number of promotions would decrease by 0.2943 times on average when the employee is female rather than male, it illustrates females have a relatively smaller number of promotions than the males, though they have satisfied the requirements of leadership.
 
-The results of the study are summarized below.  
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/productivity_salary_ggplot.png}
+  \caption{This figure is representative of the spread of salary with the scale of productivity (grouped by gender), which looks at the salary for all men, women, prefer not to say regardless of job type or employment characteristics. The men are more likely to receive the highest wage, which includes a potential tendency that more productivity comes with a lower pay.}
+\end{figure}
 
-* _1_
-* _1_
-* _1_
-*	_1_
-*	_1_
-  
-The key results of the study are summarized in the following tables.  
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/promotion_productivity.png}
+  \caption{Gender Distribution on productivity by number of promotion.}
+\end{figure}
+ 
 
 \newpage
 # Technical report
@@ -108,9 +121,14 @@ all_phase%>%ggplot(aes(x=status,fill=gender))+geom_bar(position = "fill")+theme_
   scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_status.png",width = 7, height = 4)
 ```
-![Gender Ratio in Hired/Rejected Candidates](images/hiring_status.png)
 
-From \textit{Figure 4}, we can see that in the hired candidates female only account for around 20% and 80% of the hired candidates are male. For the rejected candidates, the ratio of female and male is almost 1 to 1 with only a few candidates prefer not to say. It seems that Black Saber is hiring more male than female, but there could be the case that these hired males are better in skills and abilities. To check this, we can look at the ratings and scores in phase 3 and phase 2, and the GPA in phase 1.  
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.8\textwidth]{./images/hiring_status.png}
+  \caption{Gender Ratio in Hired/Rejected Candidates}
+\end{figure}
+
+From \textit{Figure 3}, we can see that in the hired candidates female only account for around 20% and 80% of the hired candidates are male. For the rejected candidates, the ratio of female and male is almost 1 to 1 with only a few candidates prefer not to say. It seems that Black Saber is hiring more male than female, but there could be the case that these hired males are better in skills and abilities. To check this, we can look at the ratings and scores in phase 3 and phase 2, and the GPA in phase 1.  
 
 ```{r}
 #gender distribution on interview score
@@ -122,9 +140,14 @@ all_phase%>%ggplot(aes(x=interviewer_rating_1,y=interviewer_rating_2, color=gend
   scale_color_brewer(palette = "Paired")
 ggsave("images/hiring_interview.png",width = 7, height = 4)
 ```
-![Interview Ratings from Phase 3](images/hiring_interview.png)
 
-According to \textit{Figure 5}, although there are fewer females in phase 3 but their rating are greater than or equal to most males. From this figure we could not get helpful information because the number of females is too small and there could be possible bias in rating when the interviews were taken.   
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.8\textwidth]{./images/hiring_interview.png}
+  \caption{Interview Ratings from Phase 3}
+\end{figure}
+
+According to \textit{Figure 4}, although there are fewer females in phase 3 but their rating are greater than or equal to most males. From this figure we could not get helpful information because the number of females is too small and there could be possible bias in rating when the interviews were taken.   
 
 ```{r}
 #gender distribution on GPA
@@ -141,14 +164,14 @@ ggsave("images/hiring_gpa.png",width = 7, height = 4)
 
 
 
-\begin{figure}
+\begin{figure}[H]
 \centering
-  \includegraphics[width=0.5\textwidth]{./images/hiring_gpa.png}
+  \includegraphics[width=0.8\textwidth]{./images/hiring_gpa.png}
   \caption{GPA Distribution}
 \end{figure}
 
 
-From \textit{Figure 6}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.
+From \textit{Figure 5}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.
 
 ```{r}
 #gender distribution on technical skill score
@@ -159,7 +182,7 @@ all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=
   scale_color_brewer(palette = "Paired")
 ggsave("images/hiring_techskill.png",width = 7, height = 4)
 ```
-![Technical Skills Distribution](images/hiring_techskill.png)
+
 ```{r}
 #gender distribution on writing skill score
 all_phase%>%ggplot(aes(x=writing_skills,fill=gender))+geom_histogram(binwidth=3)+theme_minimal()+
@@ -170,7 +193,7 @@ all_phase%>%ggplot(aes(x=writing_skills,fill=gender))+geom_histogram(binwidth=3)
   scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_writingskill.png",width = 7, height = 4)
 ```
-![Writing Skills Distribution](images/hiring_writingskill.png)
+
 ```{r}
 #gender distribution on speaking skill
 all_phase%>%ggplot(aes(x=speaking_skills,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()+
@@ -181,7 +204,7 @@ all_phase%>%ggplot(aes(x=speaking_skills,fill=gender))+geom_bar(position = "fill
   scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_speakingskill.png",width = 7, height = 4)
 ```
-![Speaking Skills DIstribution](images/hiring_speakingskill.png)
+
 ```{r}
 #gender distribution on leadership presence
 all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "fill")+xlab("Socre")+ylab("Percentage")+theme_minimal()+coord_flip()+
@@ -192,13 +215,37 @@ all_phase%>%ggplot(aes(x=leadership_presence,fill=gender))+geom_bar(position = "
   scale_fill_brewer(palette = "Paired")
 ggsave("images/hiring_leadership.png",width = 7, height = 4)
 ```
-![Leadership Distribution](images/hiring_leadership.png)  
-  
-\textit{Figure 7} to \textit{Figure 10} visualize the abilities of candidates in different genders, which involved technical skills, writing skills, speaking skills, and leadership.
+\textit{Figure 6} to \textit{Figure 9} visualize the abilities of candidates in different genders, which involved technical skills, writing skills, speaking skills, and leadership.
 
-- From \textit{Figure 7}, we can see that for all genders the plot is approximately normally distributed, which makes sense because most of the people are within the median level and those whole are really good at or bad at something are rare. In this case, the gender ratio in next phase should be around 1 to 1. So from this figure there could be some unfair in this process.  
-- From \textit{Figure 8}, we can see that although it seems approximately normally distributed for all genders but scores of males are higher then females. Therefore, it makes sense that more males passed this phase.  
-- From \textit{Figure 9} and \textit{Figure 10}, there are more males with higher ratings. This also supports the finding from the previous one. 
+\begin{figure}[H]
+\centering
+    \includegraphics[width=0.9\textwidth]{./images/hiring_techskill.png}
+    \caption{Technical Skills Distribution.}
+\end{figure}
+
+- From \textit{Figure 6}, we can see that for all genders the plot is approximately normally distributed, which makes sense because most of the people are within the median level and those whole are really good at or bad at something are rare. In this case, the gender ratio in next phase should be around 1 to 1. So from this figure there could be some unfair in this process. 
+
+\begin{figure}[H]
+\centering
+    \includegraphics[width=0.9\textwidth]{./images/hiring_writingskill.png}
+    \caption{Writing Skills Distribution.}
+\end{figure}
+
+- From \textit{Figure 7}, we can see that although it seems approximately normally distributed for all genders but scores of males are higher then females. Therefore, it makes sense that more males passed this phase. 
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/hiring_speakingskill.png}
+  \caption{Speaking Skills DIstribution.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/hiring_leadership.png}
+  \caption{Leadership Distribution.}
+\end{figure}
+
+- From \textit{Figure 8} and \textit{Figure 9}, there are more males with higher ratings. This also supports the finding from the previous one. 
 
 From all these figures we could only get an approximate result. To be rigorous and precise, we have to use some statistical models to help the analysis.  
 ```{r include=FALSE}
@@ -241,7 +288,7 @@ round(confint(model_phase3), 4)
 We will use logistic model \texttt{glm} to train our data since the response variable is the outcome of each phase, which is binary. 
 
 For phase 1 we fit model which takes the result of phase 1 as response variable and other data as the dependent variable. From \texttt{R} we could get \textit{Table 1}.
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{Model paratemters for phase 1}
 \begin{tabular}{|c|c|c|c|}
@@ -270,8 +317,8 @@ According to \textit{Table 1}, we can see that only p-value of GPA, extra curric
 
 We did the similar model fitting for phase 2 data and phase 3 data.
 
-For phase two we have parameters in \textit{Table 2}.Like the first model,  we use the result of phase 2 as the response varibale and fitted a logistic model.
-\begin{table}
+For phase two we have parameters in \textit{Table 2}. Like the first model,  we use the result of phase 2 as the response variable and fitted a logistic model.
+\begin{table}[H]
 \centering
 \caption{Model paratemters for phase 2}
 \begin{tabular}{|c|c|c|c|}
@@ -301,7 +348,7 @@ From \textit{Table 2} we can see that p-values of the four skills are smaller th
 
 Last but not the least, we used the result of phase 3 as the response variable and the average rating of two interviews as dependent variables to fit the third model. The parameters are in \textit{Table 3}.
 
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{Model paratemters for phase 3}
 \begin{tabular}{|c|c|c|c|}
@@ -350,17 +397,17 @@ current_employee$salary <- as.numeric(current_employee$salary)
 
 # histogram about current_employee data:
 current_employee %>% ggplot(aes(x=productivity, fill=gender)) + geom_histogram(binwidth=3) + theme_minimal() +     
-  labs(title="Frequencies by Productivity, Black Saber Software",
-      x="Frequencies",
-      y="Value of Productivity",
+  labs(title="Histogram of Productivity, Black Saber Software",
+      x="Value of Productivity",
+      y="Frequencies",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n")) +
   scale_fill_brewer(palette = "Paired")
 ggsave("images/productivity_histo.png",width = 7, height = 4)
 
 current_employee %>% ggplot(aes(x=salary, fill=gender)) + geom_histogram() + theme_minimal() + 
   labs(title="Frequencies by Salary, Black Saber Software",
-      x="Frequencies",
-      y="Annual Salary in Dollars",
+      x="Annual Salary in Dollars ",
+      y="Frequencies",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n")) +
   scale_fill_brewer(palette = "Paired")
 ggsave("images/salary_histo.png",width = 7, height = 4)
@@ -369,38 +416,41 @@ ggsave("images/salary_histo.png",width = 7, height = 4)
 cor(current_employee$productivity,current_employee$salary)
 
 # exploratory data analysis for gender wage gap:
-current_employee %>% ggplot(aes(x=productivity, y=gender)) + geom_boxplot() + theme_minimal() + labs(title="Box Plot of Productivity Grouped by Gender, Black Saber Software",
+current_employee %>% ggplot(aes(x=productivity, y=gender, color=gender)) + geom_boxplot() + theme_minimal() + labs(title="Box Plot of Productivity Grouped by Gender, Black Saber Software",
       x="Productivity",
       y="Gender",
-      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_color_brewer(palette = "Paired")
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n")) + scale_color_brewer(palette = "Paired")
 ggsave("images/productivity_box.png",width = 7, height = 4)
 
-current_employee %>% ggplot(aes(x=salary, y=gender)) + geom_boxplot() + theme_minimal() + labs(title="Box Plot of Salaries Grouped by Gender, Black Saber Software",
+current_employee %>% ggplot(aes(x=salary, y=gender, color=gender)) + geom_boxplot() + theme_minimal() + labs(title="Box Plot of Salaries Grouped by Gender, Black Saber Software",
       x="Salary",
       y="Gender",
-      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_color_brewer(palette = "Paired")
+      caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n")) + scale_color_brewer(palette = "Paired")
 ggsave("images/salary_box.png",width = 7, height = 4)
-
 ```
-![Histgram of Frequencies by Productivity.](images/productivity_histo.png)
 
-![Histgram of Frequencies by Salary.](images/salary_histo.png)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{./images/productivity_histo.png}
+    \caption{Histgram of Frequencies by Productivity.}
+\end{figure}
+    
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{./images/salary_histo.png}
+    \caption{Histgram of Frequencies by Salary.}
+\end{figure}
+
+
 
 To make the raw data more appropriate and useful for our analyzing goal, we change the format of few variables like the team, gender, employee’s ID, level of seniority, and evaluation of leadership to a proper format for later use. Also we reformat the value of salary for each record by deleting the dollar sign '$' and remove any empty space and transform all the values into numeric forms.
 
 
-Recall the research question that we want to analyze the fairness of the salary process, so we created a basic histogram \textit{Figure ?} to have a look at the frequencies of records on different productivity values and salary numbers. The productivity is close to a symmetric bell curve shape which may imply a normal distribution of productivity of employees. But for the salary, the histogram \textit{Figure ?} indicates an accumulation of records around 40,000 dollars per year and there are two small groups of people with higher than usual salaries in the range of 120,000 dollars to 160,000 dollars per year. These extreme high annual pays may come from those employees as executives and senior managers. So in this stage we can raise a concern about the unbalanced relation between productivity and salary. Then we calculate the correlation between the salary and productivity since we want to see how strong the salary and productivity are related in this firm. The value we get is - 0.0356, so productivity is negatively correlated to the salary in a weak correlation, which means that when the value of productivity rises but the salary decreases. 
+Recall the research question that we want to analyze the fairness of the salary process, so we created a basic histogram \textit{Figure 10} to have a look at the frequencies of records on different productivity values and salary numbers. The productivity is close to a symmetric bell curve shape which may imply a normal distribution of productivity of employees. But for the salary, the histogram \textit{Figure 11} indicates an accumulation of records around 40,000 dollars per year and there are two small groups of people with higher than usual salaries in the range of 120,000 dollars to 160,000 dollars per year. These extreme high annual pays may come from those employees as executives and senior managers. So in this stage we can raise a concern about the unbalanced relation between productivity and salary. Then we calculate the correlation between the salary and productivity since we want to see how strong the salary and productivity are related in this firm. The value we get is - 0.0356, so productivity is negatively correlated to the salary in a weak correlation, which means that when the value of productivity rises but the salary decreases. 
 
 
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
-# exploratory data analysis for gender wage gap:
-
-# boxplot on productivity grouped by gender:
-plot_boxplot(current_employee, title = "Boxplot of productivity and salary grouped by gender",by = "gender", geom_boxplot_args = list("outlier.color" = "grey"))
-ggsave("images/productivity_salary_box.png",width = 7, height = 4)
-
 # scatterplot on the rpoductivity by salary grouped by gender:
 ggplot(data = current_employee, aes(x = productivity,y=salary, colour = gender)) +
   geom_point(size=0.8)+theme_minimal()+
@@ -413,13 +463,26 @@ ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
 
 ```
 
-![Box plot of productivity grouped by gender.](images/productivity_box.png)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{./images/productivity_box.png}
+    \caption{Box plot of productivity grouped by gender.}
+\end{figure}
 
-![Box plot of salary grouped by gender.](images/productivity_salary_box.png)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{./images/salary_box.png}
+    \caption{Box plot of salary grouped by gender.}
+\end{figure}
 
-![Scatter plot of productivity by salary.](images/productivity_salary_ggplot.png)
 
-After having a look at the big picture, we want to focus on the gender parity in salary processing. In the \textit{Figure ?} and \textit{Figure ?} which are box plots of productivity and salary grouped into woman, Prefer not to say and the man. The man has a comparably lower productivity median but higher salary median, and salary from three groups are positively skewed which also indicates a group of records with high salaries. This is caused by the minimum wage by law and also the natural construction of an organization and company. In the \textit{Figure ?} which is a scatter plot of productivity by salary, we still can see there are three major stages that salaries accumulated, the number of women and men seems proportional to the ratio of gender in the company, but also we can see the man occupied the highest salaries on every stage of salaries with a wide range of productivity value.
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/productivity_salary_ggplot.png}
+  \caption{Scatter plot of productivity by salary.}
+\end{figure}
+
+After having a look at the big picture, we want to focus on the gender parity in salary processing. In the \textit{Figure 12} and \textit{Figure 13} which are box plots of productivity and salary grouped into woman, Prefer not to say and the man. The man has a comparably lower productivity median but higher salary median, and salary from three groups are positively skewed which also indicates a group of records with high salaries. This is caused by the minimum wage by law and also the natural construction of an organization and company. In the \textit{Figure 14} which is a scatter plot of productivity by salary, we still can see there are three major stages that salaries accumulated, the number of women and men seems proportional to the ratio of gender in the company, but also we can see the man occupied the highest salaries on every stage of salaries with a wide range of productivity value.
 
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
 # fit models for research question 2 
@@ -478,7 +541,7 @@ We conduct a likelihood ratio tests to find a final model, and we can see from t
 \end{tabular}
 \end{table}
 
-In the \textit{Table ?} of the third model 3, we see some import values from model 3. In this table, we found a highly significant negative effect of gender as women indicated by an 95\% confidence from -2802.9678 to -1722.0322 interval which doesn't contain 0. The value is -2259.1905 which means women may earn 1787 dollars less annually than men under the same conditions. Furthermore, we see that there is a weak tendency for hard working employees are more likely to have lower pays, since the interval is from -3.2015 to 1.4963 and covers 0, so the evidence is not strong enough to conclude. Also there is a interesting thing to notice that the employees who needs improvements at their levels actually has a positive affect with 245.2283 dollars on their salary under this condition.
+In the \textit{Table 4} of the third model 3, we see some import values from model 3. In this table, we found a highly significant negative effect of gender as women indicated by an 95\% confidence from -2802.9678 to -1722.0322 interval which doesn't contain 0. The value is -2259.1905 which means women may earn 1787 dollars less annually than men under the same conditions. Furthermore, we see that there is a weak tendency for hard working employees are more likely to have lower pays, since the interval is from -3.2015 to 1.4963 and covers 0, so the evidence is not strong enough to conclude. Also there is a interesting thing to notice that the employees who needs improvements at their levels actually has a positive affect with 245.2283 dollars on their salary under this condition.
 
 In summary, after analyzing the records of current employees and fitting an appropriate linear mixed effect model to help us make interpretations, there is a gender wage gap in Black Saber based on current situation and our model. What's more, there is a tendency that the factor of needing improvements actually affect salaries positively. 
 
@@ -556,8 +619,12 @@ ggplot(data = new_data, aes(x = avg_productivity,y=num_promoted, colour = gender
   scale_color_brewer(palette = "Paired")
 ggsave("images/promotion_productivity.png",width = 7, height = 4)
 ```
-![Gender Distribution on productivity by number of promotion.](images/promotion_productivity.png)
 
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/promotion_productivity.png}
+  \caption{Gender Distribution on productivity by number of promotion.}
+\end{figure}
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #EDA:
@@ -569,10 +636,15 @@ ggplot(current_employee, aes(role_seniority, ..count..)) + geom_bar(aes(fill = g
   scale_fill_brewer(palette = "Paired")
 ggsave("images/gender_role_senority.png",width = 7, height = 4)
 ```
-![Gender Ratio in Role Senority.](images/gender_role_senority.png)
 
-- From \textit{Figure ?}, we can see that the females group concentrates on one or two times of promotion, though she has relativly larger productivity than the males. The distribution of the males is more concentrated in the center of productivity and a larger number of promotion. 
-- From\textit{Figure ?}, it illusrates that the males group has more chance to promoted than females because the men has occupied a larger percentage when the position increases.
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/gender_role_senority.png}
+  \caption{Gender Ratio in Role Senority.}
+\end{figure}
+
+- From \textit{Figure 15}, we can see that the females group concentrates on one or two times of promotion, though she has relatively larger productivity than the males. The distribution of the males is more concentrated in the center of productivity and a larger number of promotion. 
+- From\textit{Figure 16}, it illustrates that the males group has more chance to promoted than females because the men has occupied a larger percentage when the position increases.
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #scatterplot on the leadership exceed expectation and number of promoted
@@ -584,7 +656,12 @@ ggplot(data = new_data, aes(x = leadership_exceeds,y=num_promoted,colour = gende
   scale_color_brewer(palette = "Paired")
 ggsave("images/promotion_exceeds_leadship.png",width = 7, height = 4)
 ```
-![Gender Distribution on exceeded leadership by the number of promotion.](images/promotion_exceeds_leadship.png)
+
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/promotion_exceeds_leadship.png}
+  \caption{Gender Distribution on exceeded leadership by the number of promotion.}
+\end{figure}
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #leadership for level on gender:
@@ -596,11 +673,16 @@ ggplot(current_employee, aes(leadership_for_level, ..count..)) +
   scale_fill_brewer(palette = "Paired")
 ggsave("images/gender_leadership.png",width = 7, height = 4)
 ```
-![Gender Ratio in Leadership Level.](images/gender_leadership.png)
 
--From \textit{Figure ?}, we can see that the majority of employees' leadership exceed their expectation are males.
+\begin{figure}[H]
+\centering
+  \includegraphics[width=0.9\textwidth]{./images/gender_leadership.png}
+  \caption{Gender Ratio in Leadership Level.}
+\end{figure}
 
--From \textit{Figure ?}, we can see that the gender in "leadership exceed expectation" category is only men, and the female has occupied above 90% in "leadership needs to improve" category.
+- From \textit{Figure 17}, we can see that the majority of employees' leadership exceed their expectation are males.
+
+- From \textit{Figure 18}, we can see that the gender in "leadership exceed expectation" category is only men, and the female has occupied above 90% in "leadership needs to improve" category.
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #fixed effects & random effects:
@@ -608,7 +690,7 @@ salary_role_seniority<- lmer(salary ~gender+team+role_seniority+leadership_for_l
 summary(salary_role_seniority)
 confint(salary_role_seniority)
 ```
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{Model parameter of role seniority}
 \begin{tabular}{|c|c|c|}
@@ -628,7 +710,7 @@ confint(salary_role_seniority)
 \end{tabular}
 \end{table}
 
-Under this **linear mixed effects model**, it grouped by the position of senior of each employees that is the random effect of this model. There are much difference in salary between the senior groups different. It shows the correlation between each variable, and the summary table illustrates the estimate and 95% confidence interval of each variable. From the \textit{Table ?} on above, the female group has a negative relationship with the salary in each role seniority group, it represents the females earned relative less salary than males in each senior position. Moreover, the team they work with and the senior level have significant effect in this salary model due to their 95% confidence interval does not contain zero. It means the changing in team and role_seniority variables would provide an obvious difference in their salary that is suitable with our common sense.
+Under this **linear mixed effects model**, it grouped by the position of senior of each employees that is the random effect of this model. There are much difference in salary between the senior groups different. It shows the correlation between each variable, and the summary table illustrates the estimate and 95% confidence interval of each variable. From the \textit{Table 5} on above, the female group has a negative relationship with the salary in each role seniority group, it represents the females earned relative less salary than males in each senior position. Moreover, the team they work with and the senior level have significant effect in this salary model due to their 95% confidence interval does not contain zero. It means the changing in team and role_seniority variables would provide an obvious difference in their salary that is suitable with our common sense.
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 #Fit model:
@@ -640,7 +722,8 @@ model_num_promote <- lmer(num_promoted ~
 summary(model_num_promote)
 confint(model_num_promote)
 ```
-\begin{table}
+
+\begin{table}[H]
 \centering
 \caption{Model parameters from number of promotion}
 \begin{tabular}{|c|c|c|}
@@ -656,17 +739,16 @@ confint(model_num_promote)
 \end{tabular}
 \end{table}
   
-  
-Under the **Linear Mixed Effects Models**, we have build a model to describe the relationship between the number of promotion and average productivity, gender and team groups, and group by leadership appropriate of employees. From the \textit{Table ?}l, it illustrates that the number of promotion would decreased by 0.2943 point in average when the employee is female rather than male. In addition, the 95% confidence interval in women group does not contain zero, it represents the female group has a significant effect in this model, and it provide a strong evidence to reject the null hypothesis (everyone has the equal opportunity on promotions)
+Under the **Linear Mixed Effects Models**, we have build a model to describe the relationship between the number of promotion and average productivity, gender and team groups, and group by leadership appropriate of employees. From the \textit{Table 6}, it illustrates that the number of promotion would decreased by 0.2943 point in average when the employee is female rather than male. In addition, the 95% confidence interval in women group does not contain zero, it represents the female group has a significant effect in this model, and it provide a strong evidence to reject the null hypothesis (everyone has the equal opportunity on promotions)
 
 ```{r,echo=FALSE, results='hide', fig.show='hide'}
 model_promote_productivity<- lmer(num_promoted~
                           gender+team+leadership_appropriate+avg_productivity+(1|leadership_appropriate),
                            data=new_data)
 summary(model_promote_productivity)
-confint(model_promote_productivity)
+confint(model_promote_productivity) 
 ```
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{Model parameter from promotion productivity}
 \begin{tabular}{|c|c|c|}
@@ -684,21 +766,21 @@ confint(model_promote_productivity)
 \end{tabular}
 \end{table}
 
-Under this **liner mixed effect model**, it adds a new variable to show the effect on the average productivity to the opportunity to promoted. From the \textit{Table ?}, the women group also has a less number of promotion than the men, and the 95% confidence interval of women do not contain zero, which means gender has a significant impact on the number of promotion. This result is as same as the previous model. Moerover, the 95% confidence interval of average productivity effect does not include zero, it represents the changing of productivity provide a significance difference on number of employee's promotion.
+Under this **liner mixed effect model**, it adds a new variable to show the effect on the average productivity to the opportunity to promoted. From the \textit{Table 7}, the women group also has a less number of promotion than the men, and the 95% confidence interval of women do not contain zero, which means gender has a significant impact on the number of promotion. This result is as same as the previous model. Moerover, the 95% confidence interval of average productivity effect does not include zero, it represents the changing of productivity provide a significance difference on number of employee's promotion.
 
 ```{r}
 lrtest(model_num_promote,model_promote_productivity)
 AIC(model_num_promote,model_promote_productivity)
 BIC(model_num_promote,model_promote_productivity)
 ```
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{Likelihood ratio test table}
 \begin{tabular}{|c|c|c|c|c|c|c|}
   \hline
   Model & \#DF & AIC & BIC & LogLik & Chisq & Pr(>Chisq)\\
   \hline
-  num\_promote & 13 & 1490.727 & 1548.038	 & -732.36 \\
+  num\_promote & 13 & 1490.727 & 1548.038	 & -732.36 & / & /\\
   \hline
   promote\_productivity & 14 & 1498.344 & 1560.063 & -735.17 & 5.6169 & 0.0178\\
   \hline
@@ -706,16 +788,18 @@ BIC(model_num_promote,model_promote_productivity)
 \end{table}
 
 
-By using the likelihood ratio test table \textit{Table ?}, we can find that the likelihood ratio Chi-Squared statistic and the p-value is smaller than 0.05, which is 0.0178, it represents the average productivity is an important effect when the employees have the chance to promote. However, from the AIC and BIC value, the model without productivity effect has a relatively smaller value, it represents this model perform better on fitting this data set. After combine the two model results, the female group perhaps has few number of promotion and less opportunity to promote than the male, though the there is not exist an obvious different about productivity in the male and female groups from the \textit{Figure ?}.
+By using the likelihood ratio test table \textit{Table 8}, we can find that the likelihood ratio Chi-Squared statistic and the p-value is smaller than 0.05, which is 0.0178, it represents the average productivity is an important effect when the employees have the chance to promote. However, from the AIC and BIC value, the model without productivity effect has a relatively smaller value, it represents this model perform better on fitting this data set. After combine the two model results, the female group perhaps has few number of promotion and less opportunity to promote than the male, though the there is not exist an obvious different about productivity in the male and female groups from the \textit{Figure 15}.
 
 
 In conclusion, after analysis the linear mixed effect model with number of promotion, gender, team and leadership performance, the result shows that number of promotion would decreased by 0.2943 point in average when the employee is female rather than male, and this effect is significant in this model. From the four graphs above, the main idea is the males occupied a relative large percentage in all nine senior position, and female group has a relative smaller number to be promoted within a same level of productivity. Therefore, the gender perhaps affect the promotion process and result in Black Saber Software.
 
 ## Discussion
 
-_In this section you will summarize your findings across all the research questions and discuss the strengths and limitations of your work. It doesn't have to be long, but keep in mind that often people will just skim the intro and the discussion of a document like this, so make sure it is useful as a semi-standalone section (doesn't have to be completely standalone like the executive summary)._
+Over the fairness assessments in hiring, salary, and promotion dimensions of Black Saber Software, few conclusions have been drawn. Concerning the hiring process, fairness analysis has been taken into the company's overall recruitment process. In the initial application, GPA, internship experiment, and extracurriculars are essential factors taking into account. In phase 2, technical task, only the skill ratings are significantly related to the pass of the second phase outcome, not gender. In phase three, in fact, neither the race nor interviewer rating has an influence on final hiring. The recruitment process is most likely concentrated on applicants' abilities and experience. When it comes to salary, the gender gap is prominent, where male's average wage is 2259 dollars annually more than females. We also noticed that employees who need improvement are likely to have high salaries. Moreover, gender has a crucial factor in internal promotion, where males occupied a relatively large percentage in all nine senior positions. 
 
 ### Strengths and limitations
+
+Over the fairness assessments in hiring, salary, and promotion dimensions of Black Saber Software, few conclusions have been drawn. Concerning the hiring process, fairness analysis has been taken into the company's overall recruitment process. In the initial application, GPA, internship experiment, and extracurriculars are essential factors taking into account. In phase 2, technical task, only the skill ratings are significantly related to the pass of the second phase outcome, not gender. In phase three, in fact, neither the race nor interviewer rating has an influence on final hiring. The recruitment process is most likely concentrated on applicants' abilities and experience. When it comes to salary, the gender gap is prominent, where male's average wage is 2259 dollars annually more than females. We also noticed that employees who need improvement are likely to have high salaries. Moreover, gender has a crucial factor in internal promotion, where males occupied a relatively large percentage in all nine senior positions. 
 
 \newpage
 # Consultant information
