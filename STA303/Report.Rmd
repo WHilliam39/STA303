@@ -283,6 +283,7 @@ ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
 
 ```
 ![Box plot of productivity and salary grouped by gender.](images/productivity_salary_box.png)
+
 ![Scatter plot of productivity by salary.](images/productivity_salary_ggplot.png)
 
 After having a look at the big picture, we want to focus on the gender parity in salary processing. In the Figure[] which is a boxplot of productivity and salary grouped into woman, Prefer not to say and the man. The man has a comparably lower productivity median but higher salary median, and salary from three groups are positively skewed which also indicates a group of records with high salaries. This is caused by the minimum wage by law and also the natural construction of an organization and company. In the Figure[] which is a scatter of productivity by salary, we still can see there are three major stages that salaries accumulated, the number of women and men seems proportional to the ratio of gender in the company, but also we can see the man occupied the highest salaries on every stage of salaries with a wide range of productivity value.
