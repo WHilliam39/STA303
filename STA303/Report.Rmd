@@ -28,22 +28,9 @@ library(Hmisc)
 library(nlme)
 library(ggbeeswarm)
 library(lmtest)
-
 # this should supress all code and messages
 knitr::opts_chunk$set(include=FALSE)
 ```
-
-# General comments (you can delete this section) Test Test 
-
-_You can delete this section, and if you want to check what it said, just open a template from the package again. You don't have to use this particular template, but you DO need to write you report in RMarkdown and include a cover page._
-
-_The cover page must have:_
-
-*	_A title and subtitle_
-* _"Report prepared for Black Saber Software by" your company name_
-*	_Date (assessment submission date is fine)_
-
-_You can change the colour of this cover to any colour you would like by replacing 6C3082 in the YAML above (line 11) to another hex code. You could use this tool to help you:_ https://htmlcolorcodes.com/color-picker/
 
 \newpage
 # Executive summary
@@ -72,22 +59,20 @@ The key results of the study are summarized in the following tables.
 
 \newpage
 # Technical report
-_This part of the report is much more comprehensive than the executive summary. The audience is statistics/data-minded people, but you should NOT include code or unformatted R output here._
-
 
 ## Introduction
 
-We, White Shield Analytics, accepted a commission from Black Saber Software to conduct an analysis to tell whether there is bias in the process of hiring, promotion and salary. For the analysis of hiring process, Black Saber Software provide data of hiring a new AI recruitment pipeline manager. For promotion and salary, the data of current employee was provided.  
+We, White Shield Analytics, accepted a commission from Black Saber Software to conduct an analysis to tell whether there is bias in the process of hiring, promotion and salary. For the analysis of hiring process, Black Saber Software provide data of hiring a new AI recruitment pipeline manager. For promotion and salary, the data of current employee were provided.  
   
 ### Research questions:
 In this report, we will use these provided data and conduct statistical analysis to address the following research questions:
-* _Is the process of hiring fair in genders and based on the skills and abilities of candidates?_
-* _Is there a gender wage gap in Black Saber?_
-* _Is there a gender promotion gap in Black Saber? _
+
+- Is the process of hiring fair in genders and based on the skills and abilities of candidates?
+- Is there a gender wage gap in Black Saber?
+- Is there a gender promotion gap in Black Saber? 
 
 ## 1. Is the process of hiring fair in genders and based on the skills and abilities of candidates?
 
-_For each research question, you will want to briefly describe any data manipulation, show some exploratory plots/summary tables, report on any methods you use (i.e. models you fit) and the conclusions you draw from these_
 ```{r include=FALSE}
 #extract hiring data
 final_hiring<-read_csv("data/final-hires-newgrad_2020.csv")
@@ -112,7 +97,8 @@ all_phase$status<-ifelse(all_phase$applicant_id %in% final_hiring$applicant_id,"
 all_phase<-as.data.frame(unclass(all_phase))
 all_phase$applicant_id<-as.character(all_phase$applicant_id)
 ```
-The data was provided by Black Saber, which is about hiring an AI recruitment pipeline manager. There were totally 613 candidates and finally 10 of them were hired. For each candidate there is a application id as their unique identifier. There were three phases of the hiring process. For the first phase, the department applied for, whether cover letter or CV was provided, GPA, gender, extracurriculars, and internship experience was collected. After phase 1, 313 candidates were filtered. During phase 2, technical skills, writing skills, leadership presence, and speaking skills of each candidates were collected as a scour out of 100. After the review of phase 2, only 22 candidates were left and two interviews were taken for each candidates with a rating out of 100 during phase 3. Finally 10 candidates were hired.   
+The data was provided by Black Saber, which is about hiring an AI recruitment pipeline manager. There were totally 613 candidates and finally 10 of them were hired. For each candidate there is a application id as their unique identifier. There were three phases of the hiring process. For the first phase, the department applied for, whether cover letter or CV was provided, GPA, gender, extracurriculars, and internship experience was collected. After phase 1, 313 candidates were filtered. During phase 2, technical skills, writing skills, leadership presence, and speaking skills of each candidates were collected as a scour out of 100. After the review of phase 2, only 22 candidates were left and two interviews were taken for each candidates with a rating out of 100 during phase 3. Finally 10 candidates were hired.
+
 For each phase, Black Saber provided a data set in csv file with a list of application id of hired candidates. To analyze the whole process of hiring, we join all these 4 tables together so that each row of the data set represents the whole condition of a candidate. If some candidate did not get into phase 2 or phase 3, the corresponding data column will be \texttt{NA}. As for our question, we are interested in the gender parity in the hiring process. First we can look at the ratio of male, female, and prefer not to say within both hired and rejected candidates.  
 
 ```{r}
@@ -127,7 +113,7 @@ ggsave("images/hiring_status.png",width = 7, height = 4)
 ```
 ![Gender Ratio in Hired/Rejected Candidates](images/hiring_status.png)
 
-From \textit{Figure 1}, we can see that in the hired candidates female only account for around 20% and 80% of the hired candidates are male. For the rejected candidates, the ratio of female and male is almost 1 to 1 with only a few candidates prefer not to say. It seems that Black Saber is hiring more male than female, but there could be the case that these hired males are better in skills and abilitirs. To check this, we can look at the ratings and scores in phase 3 and phase 2, and the GPA in phase 1.  
+From \textit{Figure 4}, we can see that in the hired candidates female only account for around 20% and 80% of the hired candidates are male. For the rejected candidates, the ratio of female and male is almost 1 to 1 with only a few candidates prefer not to say. It seems that Black Saber is hiring more male than female, but there could be the case that these hired males are better in skills and abilities. To check this, we can look at the ratings and scores in phase 3 and phase 2, and the GPA in phase 1.  
 
 ```{r}
 #gender distribution on interview score
@@ -141,7 +127,7 @@ ggsave("images/hiring_interview.png",width = 7, height = 4)
 ```
 ![Interview Ratings from Phase 3](images/hiring_interview.png)
 
-According to \textit{Figure x}, although there are fewer females in phase 3 but their rating are greater than or equal to most males. From this figure we could not get helpful information beacuase the number of females is too small and there could be possible bias in rating when the interviews were taken.   
+According to \textit{Figure 5}, although there are fewer females in phase 3 but their rating are greater than or equal to most males. From this figure we could not get helpful information because the number of females is too small and there could be possible bias in rating when the interviews were taken.   
 
 ```{r}
 #gender distribution on GPA
@@ -153,9 +139,9 @@ all_phase%>%ggplot(aes(x=status,y=gpa, color=gender))+geom_quasirandom(size=1)+c
 ggsave("images/hiring_gpa.png",width = 7, height = 4)
 ```
 ![GPA For Rejected and Hired Candidates in Different Gender](images/hiring_gpa.png)  
-From \textit{Figure x}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.  
 
-From all these figures we could only get an approximate result. To be rigorous and precise, we have to use some statistical models to help the analysis.  
+From \textit{Figure 6}, all candidates that were finally hired have a GPA over 3.0. And males' GPA seems higher than females'. This seems that the hiring process is based on candidates' ability.  
+
 ```{r}
 #gender distribution on technical skill score
 all_phase%>%ggplot(aes(x=technical_skills,color=gender))+geom_freqpoly(binwidth=10,size=2)+theme_minimal()+labs(title="Technical skill score distribution with race, Black Saber Software",
@@ -200,10 +186,13 @@ ggsave("images/hiring_leadership.png",width = 7, height = 4)
 ```
 ![Leadership Distribution](images/hiring_leadership.png)  
   
-\textit{Figure x} to \textit{Figure x} visualize the abilities of candidates in different genders, which involved technical skills, writing skills, speaking skills, and leadership.  
-- From \textit{Figure x}, we can see that for all genders the plot is approximately normally distributed, which makes sense because most of the people are within the median level and those whole are really good at or bad at something are rare. In this case, the gender ratio in next phase should be around 1 to 1. So from this figure there could be some unfair in this process.  
-- From \textit{Figure x}, we can see that although it seems approximately normally distributed for all genders but scores of males are higher then females. Therefore, it makes sense that more males passed this phase.  
-- From \textit{Figure x} and \textit{Figure x}, there are more males with higher ratings. This also supports the finding from the previous one.  
+\textit{Figure 7} to \textit{Figure 10} visualize the abilities of candidates in different genders, which involved technical skills, writing skills, speaking skills, and leadership.
+
+- From \textit{Figure 7}, we can see that for all genders the plot is approximately normally distributed, which makes sense because most of the people are within the median level and those whole are really good at or bad at something are rare. In this case, the gender ratio in next phase should be around 1 to 1. So from this figure there could be some unfair in this process.  
+- From \textit{Figure 8}, we can see that although it seems approximately normally distributed for all genders but scores of males are higher then females. Therefore, it makes sense that more males passed this phase.  
+- From \textit{Figure 9} and \textit{Figure 10}, there are more males with higher ratings. This also supports the finding from the previous one. 
+
+From all these figures we could only get an approximate result. To be rigorous and precise, we have to use some statistical models to help the analysis.  
 ```{r include=FALSE}
 #create binary variable for each of the phase
 phase1$result<-ifelse(phase1$applicant_id%in%phase2$applicant_id,'Proceed','NO')
