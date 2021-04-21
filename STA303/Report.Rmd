@@ -225,6 +225,11 @@ summary(model3)
 
 ## 2. Is there a gender wage gap in Black Saber?
 
+The second research question in our report is to analyze the potential impact of gender in salaries and how Black Saber is doing around pay equity based on the productivity and talent of their employees. 
+
+The data we used are from the current employees in Black Saber Software which has a total size of 6906 records that may contain different records based on different time quarters from the same employee. In the data frame, we have inforamtion such as the unique employee’s ID (employee_id), the gender of employee (gender), the team they belong to (team), the financial quarter of the record (financial_q), the employee's level of seniority (role_ seniority), the evaluation of employee’s leadership (leadership_for_level), measure the  employee’s productivity relative to job functions (productivity), and salary for each quarter (salary).
+
+
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
 # data wrangling for research questions 2 and 3
 
@@ -254,6 +259,10 @@ cor(current_employee$productivity,current_employee$salary)
 
 ```
 
+To make the raw data more appropriate and useful for our analyzing goal, we change the format of few variables like the team, gender, employee’s ID, level of seniority, and evaluation of leadership to a proper format for later use. Also we reformat the value of salary for each record by deleting the dollar sign $ and remove any empty space and transform all the values into numeric forms.
+
+Recall the research question that we want to analyze the fairness of the salary process, so we created a basic histogram to have a look at the frequencies of records on different productivity values and salary numbers. The productivity is close to a symmetric bell curve shape which may imply a normal distribution of productivity of employees. But for the salary, the histogram indicates an accumulation of records around 40,000 dollars per year and there are two small groups of people with higher than usual salaries in the range of 120,000 dollars to 160,000 dollars per year. These extreme high annual pays may come from those employees as executives and senior managers. So in this stage we can raise a concern about the unbalanced relation between productivity and salary. Then we calculate the correlation between the salary and productivity since we want to see how strong the salary and productivity are related in this firm. The value we get is - 0.0356, so productivity is negatively correlated to the salary in a weak correlation, which means that when the value of productivity rises but the salary decreases. 
+
 
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
 # exploratory data analysis for gender wage gap:
@@ -269,12 +278,14 @@ ggplot(data = current_employee, aes(x = productivity,y=salary, colour = gender))
       x="Productivity",
       y="Salary",
       caption=str_c("Created by: White Sheild Analytics\n","Source: Black Saber Software\n"))+
-  scale_color_brewer(palette = "Pastel2")
+  scale_color_brewer(palette = "Paired")
 ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
 
 ```
 ![Box plot of productivity and salary grouped by gender.](images/productivity_salary_box.png)
 ![Scatter plot of productivity by salary.](images/productivity_salary_ggplot.png)
+
+After having a look at the big picture, we want to focus on the gender parity in salary processing. In the Figure[] which is a boxplot of productivity and salary grouped into woman, Prefer not to say and the man. The man has a comparably lower productivity median but higher salary median, and salary from three groups are positively skewed which also indicates a group of records with high salaries. This is caused by the minimum wage by law and also the natural construction of an organization and company. In the Figure[] which is a scatter of productivity by salary, we still can see there are three major stages that salaries accumulated, the number of women and men seems proportional to the ratio of gender in the company, but also we can see the man occupied the highest salaries on every stage of salaries with a wide range of productivity value.
 
 ```{r, echo=FALSE, results='hide', fig.show='hide'}
 # fit models for research question 2 
@@ -283,16 +294,24 @@ ggsave("images/productivity_salary_ggplot.png",width = 7, height = 4)
 model_salary_fixed <- gls(salary ~ gender + team + role_seniority + leadership_for_level + productivity, data=current_employee, method = "ML")
 summary(model_salary_fixed)
 ```
+To investigate the impact of gender on salary, we estimate a **Linear Mixed Effect Model ** model which includes the gender of the employee, the team they belong to, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects. Because we expect that the above elements will have an effect on the salary in a standard linear regression. 
 
 ```{r, echo=FALSE, results='hide'}
 # fixed effects & random effects with individual team:
 model_salary_mixed <- lme(salary ~ gender + role_seniority + leadership_for_level + productivity, data=current_employee, random = ~1|team, method = "ML")
 summary(model_salary_mixed)
 ```
+The second model we use **Linear Mixed Effect Model ** which includes the team as a random effect on the salary to improve the previous model. This is because the team is categorized and the beneficial results or leadership of the manager in different teams may have varied effects on salary, and we would like to know how much variation is contributed to this when we estimate the salary. Fixed effects in the model included gender of the employee, the employee's level of seniority, the evaluation of employee’s leadership ,employee’s productivity as fixed effects.
 
 ```{r, echo=FALSE, results='hide'}
 lrtest(model_salary_fixed, model_salary_mixed)
 ```
+We conduct a likelihood ratio test to find a final model, and we can see the p-value is quite low as 1.27e-09. This tells us that the complex model with the team as a random effect is significantly more accurate, so we will move forward with the second linear mixed effect model for further interpretations.
+
+In the results of the second model, we see a highly significant negative effect of gender as women with their annual pay. The value is -1786.98 with the p-value of 0.0000 which means strong evidence of effect on salary.  In other words, women may earn about 1787 dollars less annually than men under the same conditions.  Furthermore, we see that there is a weak tendency for hard working employees are more likely to have higher pays, since the value of effect on productivity is positive 1.83 but with a little evidence to see with big p-value 0.5258. 
+
+In summary, after analyzing the records of current employees and fitting a linear mixed effect model to help us make interpretations, there is a gender wage gap in Black Saber based on current situation and the tendency that more productive and talented employees could have higher wages is weak. 
+
 
 ## 3. Is there a gender promotion gap in Black Saber?
 
